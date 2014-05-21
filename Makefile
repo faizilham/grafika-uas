@@ -1,7 +1,7 @@
 # generic makefile
 
 # the module names
-MODULES = main.c iohandler.c libgraph.c
+MODULES = main.c iohandler.c libgraph.c button.c
 
 LIB = -Llib -lopenbgi -lgdi32
 INCLUDE = -Ilib
