@@ -14,6 +14,10 @@ void paintpix(int x, int y, int color){
 	putpixel(midx + x, midy - y, color);
 }
 
+int cgetpixel(int x, int y){
+	return getpixel(midx + x, midy - y);
+}
+
 void draw_line(int x1, int y1, int x2, int y2, int color){
 	// using bresenham algorithm
 

@@ -12,7 +12,8 @@
 /** Graphic Primitive **/
 
 void init_graph();
-void paintpix(int x, int y, int color);
+void paintpix(int x, int y, int color); //getpixel for cartesian coordinate system
+int cgetpixel(int x, int y);
 
 /** Graphics Algorithms **/
 
