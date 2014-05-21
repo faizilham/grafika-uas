@@ -1,7 +1,7 @@
 # generic makefile
 
 # the module names
-MODULES = main.cpp libgraph.cpp iohandler.cpp
+MODULES = main.c iohandler.c libgraph.c
 
 LIB = -Llib -lopenbgi -lgdi32
 INCLUDE = -Ilib
@@ -9,20 +9,25 @@ INCLUDE = -Ilib
 MODE = debug
 # release or debug
 
+FLAGS = -std=c99
+
 ifeq ($(MODE), release)
 FLAGS += -O2
 else
 FLAGS += -O0 -g
 endif
 
+CC = gcc
+EXT = c
+
 # Everything after this is generic, no need to edit
 
-OBJS := ${MODULES:%.cpp=bin/%.o}
+OBJS := ${MODULES:%.$(EXT)=bin/%.o}
 
 .PHONY: all run clean
   
 all: $(OBJS)
-	g++ -o bin/main $(OBJS) $(LIB)
+	$(CC) -o bin/main $(OBJS) $(LIB)
 
 run:
 	bin/main
@@ -30,6 +35,6 @@ run:
 clean:
 	rm -f bin/main bin/*.o
 
-bin/%.o : src/%.cpp 
-	g++ -c $< -o $@ $(FLAGS) $(INCLUDE)
+bin/%.o : src/%.$(EXT)
+	$(CC) -c $< -o $@ $(FLAGS) $(INCLUDE)
 

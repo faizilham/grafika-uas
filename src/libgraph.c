@@ -1,4 +1,4 @@
-#include "libgraph.hpp"
+#include "libgraph.h"
 
 static int midx, midy;
 

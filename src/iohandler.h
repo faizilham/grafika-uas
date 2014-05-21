@@ -1,8 +1,10 @@
-#ifndef IOHANDLER_HPP
-#define IOHANDLER_HPP
+#ifndef IOHANDLER_H
+#define IOHANDLER_H
 
 #include <dos.h>
 #include <conio.h>
+
+#include "boolean.h"
 
 #define MOUSE_NONE 0
 #define MOUSE_LEFT 1
@@ -15,8 +17,8 @@ typedef struct{
 	long long timestamp;
 } mevent_t;
 
-bool getch_async(char& c);
-void get_mouse_event(mevent_t& e);
+bool getch_async(char* c);
+void get_mouse_event(mevent_t* e);
 
 
 #endif
