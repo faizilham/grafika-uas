@@ -1,17 +1,21 @@
 #include "libgraph.h"
 
-static int midx, midy;
+int midx, midy;
 
 void init_graph(){
 	int gdriver = DETECT; int gmode;
 	initgraph(&gdriver,&gmode,"C:\\TC\\BGI");
-	midx=getmaxx()/2;
-	midy=getmaxy()/2;
+	midx=(getmaxx() + 1)/2;
+	midy=(getmaxy() + 1)/2;
 }
 
 void paintpix(int x, int y, int color){
 	//putpixel(midx + x, midy - y, color); // put pixel with translation & rounding
 	putpixel(midx + x, midy - y, color);
+}
+
+int cgetpixel(int x, int y){
+	return getpixel(midx + x, midy - y);
 }
 
 void draw_line(int x1, int y1, int x2, int y2, int color){
@@ -120,10 +124,8 @@ void draw_ellipse(int xc, int yc, int rx,int ry, int color){
 
 void fill (int x, int y, int fill_color, int boundary_color)
 {
-	int cartesian_x = midx + x;
-	int cartesian_y = midy - y;
 	int current;
-	current = getpixel(cartesian_x, cartesian_y);
+	current = cgetpixel(x, y);
 
 	if ((current != boundary_color) &&  (current != fill_color)){
 		setcolor(fill_color);
@@ -138,16 +140,15 @@ void fill (int x, int y, int fill_color, int boundary_color)
 
 bool isExtremePoint(int x, int y){
 	bool result;
-	int cartesian_x = midx + x;
-	int cartesian_y = midy - y;
-	int boundary_color = getpixel(cartesian_x, cartesian_y);
+	
+	int boundary_color = cgetpixel(x, y);
 	
 	//neighbouring pixels
-	int left_color = getpixel(cartesian_x-1, cartesian_y);
-	int right_color = getpixel(cartesian_x+1, cartesian_y);
-	int leftbottom_color = getpixel(cartesian_x-1, cartesian_y-1);
-	int rightbottom_color = getpixel(cartesian_x+1, cartesian_y-1);
-	int bottom_color = getpixel(cartesian_x, cartesian_y-1);
+	int left_color = cgetpixel(x-1, y);
+	int right_color = cgetpixel(x+1, y);
+	int leftbottom_color = cgetpixel(x-1, y-1);
+	int rightbottom_color = cgetpixel(x+1, y-1);
+	int bottom_color = cgetpixel(x, y-1);
 	
 	if((left_color != boundary_color)
 		&& (right_color != boundary_color)
@@ -173,15 +174,15 @@ void fill_polygon (int xmin, int ymin, int xmax, int ymax, int fill_color, int b
 		curr_x = xmin;
 		bool status = false;
 		//go to the leftmost edge
-		curr_color = getpixel(midx + curr_x,midy - y);
+		curr_color = cgetpixel(curr_x, y);
 		while((curr_color != boundary_color) && (curr_x < xmax)){
 			curr_x++;
-			curr_color = getpixel(midx + curr_x,midy - y);
+			curr_color = cgetpixel(curr_x, y);
 		}
 		//found the leftmost edge
 		if(curr_color == boundary_color){
 			while(curr_x < xmax){
-				curr_color = getpixel(midx + curr_x,midy - y);
+				curr_color = cgetpixel(curr_x, y);
 				//if curr_x meets the boundary edge
 				if(curr_color == boundary_color){
 					if(isExtremePoint(curr_x,y) == false){
@@ -200,7 +201,3 @@ void fill_polygon (int xmin, int ymin, int xmax, int ymax, int fill_color, int b
 		}
 	}	
 }
-
-
-
-

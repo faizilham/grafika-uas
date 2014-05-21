@@ -4,9 +4,13 @@
 #include "line.h"
 #include "rect.h"
 
+extern int midx, midy;
+
 int main(){
 	char c = 0; mevent_t e;
 	init_graph();
+	
+	printf("%d %d\n", midx, midy); // 319 239
 	
 	Line l = line_create(0, 0, 200, 200);
 	Rect r = rect_create(-150, -150, 50, 50);

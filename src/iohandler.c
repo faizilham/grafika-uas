@@ -25,7 +25,7 @@ static g_mousestate state;
 void get_mouse_event(mevent_t* e){
 	getmousestate(&state);
 	
-	e->x = midx + state.x; e->y = midy - state.y; e->button = state.buttons;
+	e->x = state.x - midx; e->y = midy - state.y; e->button = state.buttons;
 	e->timestamp = mouse_tstamp++;
 }
 
