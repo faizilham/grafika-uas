@@ -1,16 +1,15 @@
 #include "libgraph.h"
 
-static int midx, midy;
+int midx, midy;
 
 void init_graph(){
 	int gdriver = DETECT; int gmode;
 	initgraph(&gdriver,&gmode,"C:\\TC\\BGI");
-	midx=getmaxx()/2;
-	midy=getmaxy()/2;
+	midx=(getmaxx() + 1)/2;
+	midy=(getmaxy() + 1)/2;
 }
 
 void paintpix(int x, int y, int color){
-	//putpixel(midx + x, midy - y, color); // put pixel with translation & rounding
 	putpixel(midx + x, midy - y, color);
 }
 
@@ -201,7 +200,3 @@ void fill_polygon (int xmin, int ymin, int xmax, int ymax, int fill_color, int b
 		}
 	}	
 }
-
-
-
-
