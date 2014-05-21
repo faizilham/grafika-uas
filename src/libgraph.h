@@ -23,4 +23,5 @@ void draw_ellipse(int xc, int yc, int rx,int ry, int color);
 void fill (int x, int y, int fill_color, int boundary_color);
 int isExtremePoint(int x, int y); //used for fill_polygon method
 void fill_polygon (int xmin, int ymin, int xmax, int ymax, int fill_color, int boundary_color);
+
 #endif

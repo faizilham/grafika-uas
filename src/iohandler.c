@@ -16,6 +16,8 @@ bool getch_async(char* c){
 	}
 }
 
+extern int midx, midy;
+
 #ifdef DUMMY_DOS_H
 static int mouse_tstamp = 0;
 static g_mousestate state;
@@ -23,7 +25,7 @@ static g_mousestate state;
 void get_mouse_event(mevent_t* e){
 	getmousestate(&state);
 	
-	e->x = state.x; e->y = state.y; e->button = state.buttons;
+	e->x = midx + state.x; e->y = midy - state.y; e->button = state.buttons;
 	e->timestamp = mouse_tstamp++;
 }
 
