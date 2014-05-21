@@ -7,11 +7,11 @@ void rect_setMinMax(Rect* r){
 	r->max = r->corner[0];
 	
 	for (int i = 1; i < 4; i++){
-		r->min.x = min(r->min.x, r->corner[0].x);
-		r->min.y = min(r->min.y, r->corner[0].y);
+		r->min.x = min(r->min.x, r->corner[i].x);
+		r->min.y = min(r->min.y, r->corner[i].y);
 		
-		r->max.x = max(r->max.x, r->corner[0].x);
-		r->max.y = max(r->max.y, r->corner[0].y);
+		r->max.x = max(r->max.x, r->corner[i].x);
+		r->max.y = max(r->max.y, r->corner[i].y);
 	}
 }
 

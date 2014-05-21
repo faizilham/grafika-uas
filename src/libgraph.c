@@ -10,7 +10,6 @@ void init_graph(){
 }
 
 void paintpix(int x, int y, int color){
-	//putpixel(midx + x, midy - y, color); // put pixel with translation & rounding
 	putpixel(midx + x, midy - y, color);
 }
 
