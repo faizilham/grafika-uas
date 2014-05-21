@@ -3,7 +3,7 @@
 
 int main(){
 	char c = 0; mevent_t e;
-	//init_graph();
+	init_graph();
 	
 	// main loop
 	while (c != 'q' && c != 'Q'){
