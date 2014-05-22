@@ -57,6 +57,11 @@ Shape shape_create(int num, ...){
 	return s;
 }
 
+void shape_setObject(Shape* s, int type, void *object){
+	s->type = type;
+	s->object = object;
+}
+
 void shape_translate(Shape* s, int dx, int dy){
 	switch(s->type){
 		case TYPE_CIRCLE: circ_translate((Circ*)s->object, dx, dy); break;
@@ -103,8 +108,27 @@ void shape_draw(Shape* s){
 	switch(s->type){
 		case TYPE_CIRCLE: circ_draw((Circ*)s->object); break;
 		case TYPE_RECT: rect_draw((Rect*)s->object); break;
-		case TYPE_POLYGON: polygon_draw((Poly*)s->object); break;
+		case TYPE_POLYGON: polygon_draw((Poly*)s->object);  break;
 		case TYPE_LINE: line_draw((Line*)s->object); break;
 		case TYPE_CURVE: curve_draw((Curve*)s->object); break;
+	}
+}
+
+void shape_setColor(Shape* s, int color){
+	switch(s->type){
+		case TYPE_CIRCLE:((Circ*)s->object)->color = color; break;
+		case TYPE_RECT:((Rect*)s->object)->color = color; break;
+		case TYPE_POLYGON: ((Poly*)s->object)->color = color; break;
+		case TYPE_LINE: ((Line*)s->object)->color = color; break;
+		case TYPE_CURVE:((Curve*)s->object)->color = color; break;
+	}
+}
+
+void shape_setFillColor(Shape* s, int fill){
+	switch(s->type){
+		case TYPE_CIRCLE: ((Circ*)s->object)->fill = fill; break;
+		case TYPE_RECT:((Rect*)s->object)->fill = fill; break;
+		case TYPE_POLYGON: ((Poly*)s->object)->fill = fill; break;
+		// line dan curve tidak bisa di fill
 	}
 }

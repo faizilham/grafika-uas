@@ -20,10 +20,13 @@ void button_draw(Button button){
 	draw_line(button.x+button.width,button.y+button.height,button.x,button.y+button.height,button.border);
 	draw_line(button.x,button.y+button.height,button.x,button.y,button.border);
 	fill(button.x+1,button.y+1,button.color,button.border);
-	if (button.icon != NULL){
-		button.icon->color = button.border;
-		polygon_draw(button.icon);
-	}
+	//if (button.icon != NULL){
+		//button.icon->color = button.border;
+		//polygon_draw(button.icon);
+	//}
+	
+	shape_setColor(&button.icon, button.border);
+	shape_draw(&button.icon);
 }
 
 bool button_checkcollision(Button button,int x,int y){
@@ -326,8 +329,12 @@ void buttonaction_fill(void* args){
 	int color = ((int*)args)[2];
 }
 
-Poly polygon,polygon2,polygon3,polygon4,polygon5;
+Poly polygon,polygon3,polygon5;
 Poly polygon6,polygon7,polygon8,polygon9,polygon10,polygon11;
+
+Curve curv_icon;
+Circ circ_icon;
+
 int nbutton;
 
 void init_button(Button* buttons){
@@ -349,35 +356,50 @@ void init_button(Button* buttons){
 	buttons[14].x = 250; buttons[14].y = 185; buttons[14].width = 20; buttons[14].height = 20; buttons[14].color = 14; buttons[14].callback = buttonaction_fill;
 	buttons[15].x = 275; buttons[15].y = 185; buttons[15].width = 20; buttons[15].height = 20; buttons[15].color = 15; buttons[15].callback = buttonaction_fill;
 	
-
+	for (int i = 0; i < nbutton; i++){
+		buttons[i].icon.type = -1;
+	}
+	
+	// line button
 	buttons[16].x = -300; buttons[16].y = 200; buttons[16].width = 25; buttons[16].height = 25; buttons[16].color = 0;
 	Point corner[30];
 	corner[0].x = -295; corner[0].y = 205; corner[1].x = -280; corner[1].y = 220;
 	polygon = polygon_create(corner,2);
-	buttons[16].icon = &polygon;
+	//buttons[16].icon = &polygon;
+	shape_setObject(&buttons[16].icon, TYPE_POLYGON, &polygon);
 	buttons[16].callback = buttonaction_createline;
 	
+	// curve button
+	
 	buttons[17].x = -270; buttons[17].y = 200; buttons[17].width = 25; buttons[17].height = 25; buttons[17].color = 0;
-	Point corner2[30];
-	corner2[0].x = -265; corner2[0].y = 205; corner2[1].x = -250; corner2[1].y = 220;
-	polygon2 = polygon_create(corner2,2);
-	buttons[17].icon = &polygon2;
+	Point corner2[4];
+	corner2[0].x = -265; corner2[0].y = 205; corner2[1].x = -265; corner2[1].y = 212; corner2[2].x = -257; corner2[2].y = 220; corner2[3].x = -250; corner2[3].y = 220;
+	curv_icon = curve_create(corner2);
+	//buttons[17].icon = &polygon2;
+	shape_setObject(&buttons[17].icon, TYPE_CURVE, &curv_icon);
 	buttons[17].callback = buttonaction_createcurve;
-
+	
+	// rect button
+	
 	buttons[18].x = -240; buttons[18].y = 200; buttons[18].width = 25; buttons[18].height = 25; buttons[18].color = 0;
 	Point corner3[30];
 	corner3[0].x = -235; corner3[0].y = 205; corner3[1].x = -235; corner3[1].y = 220;
 	corner3[2].x = -220; corner3[2].y = 220; corner3[3].x = -220; corner3[3].y = 205;
 	polygon3 = polygon_create(corner3,4);
-	buttons[18].icon = &polygon3;
+	//buttons[18].icon = &polygon3;
+	shape_setObject(&buttons[18].icon, TYPE_POLYGON, &polygon3);
 	buttons[18].callback = buttonaction_createsquare;
+	
+	// circ button
 
 	buttons[19].x = -210; buttons[19].y = 200; buttons[19].width = 25; buttons[19].height = 25; buttons[19].color = 0;
-	Point corner4[30];
-	corner4[0].x = -205; corner4[0].y = 205; corner4[1].x = -190; corner4[1].y = 220;
-	polygon4 = polygon_create(corner4,2);
-	buttons[19].icon = &polygon4;
+	
+	circ_icon = circ_create(-197, 212, 7);
+	//buttons[19].icon = &polygon4;
+	shape_setObject(&buttons[19].icon, TYPE_CIRCLE, &circ_icon);
 	buttons[19].callback = buttonaction_createcircle;
+	
+	// poly button
 
 	buttons[20].x = -180; buttons[20].y = 200; buttons[20].width = 25; buttons[20].height = 25; buttons[20].color = 0;
 	Point corner5[30];
@@ -385,49 +407,66 @@ void init_button(Button* buttons){
 	corner5[2].x = -160; corner5[2].y = 215; corner5[3].x = -168; corner5[3].y = 220;
 	corner5[4].x = -175; corner5[4].y = 215;
 	polygon5 = polygon_create(corner5,5);
-	buttons[20].icon = &polygon5;
+	//buttons[20].icon = &polygon5;
+	shape_setObject(&buttons[20].icon, TYPE_POLYGON, &polygon5);
 	buttons[20].callback = buttonaction_createpolygon;
+	
+	// rotate + button
 	
 	buttons[21].x = -80; buttons[21].y = 200; buttons[21].width = 20; buttons[21].height = 20; buttons[21].color = 0;
 	Point corner6[30];
 	corner6[0].x = -70; corner6[0].y = 210; corner6[1].x = -70; corner6[1].y = 215; corner6[2].x = -70; corner6[2].y = 205;
 	corner6[3].x = -70; corner6[3].y = 210; corner6[4].x = -65; corner6[4].y = 210; corner6[5].x = -75; corner6[5].y = 210;
 	polygon6 = polygon_create(corner6,6);
-	buttons[21].icon = &polygon6;
-
+	//buttons[21].icon = &polygon6;
+	shape_setObject(&buttons[21].icon, TYPE_POLYGON, &polygon6);
+	// rotate - button
 
 	buttons[22].x = -55; buttons[22].y = 200; buttons[22].width = 20; buttons[22].height = 20; buttons[22].color = 0;
 	Point corner7[30];
 	corner7[0].x = -50; corner7[0].y = 210; corner7[1].x = -40; corner7[1].y = 210;
 	polygon7 = polygon_create(corner7,2);
-	buttons[22].icon = &polygon7;
+	//buttons[22].icon = &polygon7;
+	shape_setObject(&buttons[22].icon, TYPE_POLYGON, &polygon7);
 
+	// scale + button
 
 	buttons[23].x = -25; buttons[23].y = 200; buttons[23].width = 20; buttons[23].height = 20; buttons[23].color = 0;
 	Point corner8[30];
 	corner8[0].x = -15; corner8[0].y = 210; corner8[1].x = -15; corner8[1].y = 215; corner8[2].x = -15; corner8[2].y = 205;
 	corner8[3].x = -15; corner8[3].y = 210; corner8[4].x = -10; corner8[4].y = 210; corner8[5].x = -20; corner8[5].y = 210;
 	polygon8 = polygon_create(corner8,6);
-	buttons[23].icon = &polygon8;
+	//buttons[23].icon = &polygon8;
+	shape_setObject(&buttons[23].icon, TYPE_POLYGON, &polygon8);
 
+	// scale - button
+	
 	buttons[24].x = 0; buttons[24].y = 200; buttons[24].width = 20; buttons[24].height = 20; buttons[24].color = 0;
 	Point corner9[30];
 	corner9[0].x = 5; corner9[0].y = 210; corner9[1].x = 15; corner9[1].y = 210;
 	polygon9 = polygon_create(corner9,2);
-	buttons[24].icon = &polygon9;
+	//buttons[24].icon = &polygon9;
+	shape_setObject(&buttons[24].icon, TYPE_POLYGON, &polygon9);
 
+	// order + button
+	
 	buttons[25].x = 30; buttons[25].y = 200; buttons[25].width = 20; buttons[25].height = 20; buttons[25].color = 0;
 	Point corner10[30];
 	corner10[0].x = 40; corner10[0].y = 210; corner10[1].x = 40; corner10[1].y = 215; corner10[2].x = 40; corner10[2].y = 205;
 	corner10[3].x = 40; corner10[3].y = 210; corner10[4].x = 45; corner10[4].y = 210; corner10[5].x = 35; corner10[5].y = 210;
 	polygon10 = polygon_create(corner10,6);
-	buttons[25].icon = &polygon10;
+	//buttons[25].icon = &polygon10;
+	shape_setObject(&buttons[25].icon, TYPE_POLYGON, &polygon10);
+	
 
+	// order - button
+	
 	buttons[26].x = 55; buttons[26].y = 200; buttons[26].width = 20; buttons[26].height = 20; buttons[26].color = 0;
 	Point corner11[30];
 	corner11[0].x = 60; corner11[0].y = 210; corner11[1].x = 70; corner11[1].y = 210;
 	polygon11 = polygon_create(corner11,2);
-	buttons[26].icon = &polygon11;
+	//buttons[26].icon = &polygon11;
+	shape_setObject(&buttons[26].icon, TYPE_POLYGON, &polygon11);
 
 	buttons[27].x = -142; buttons[27].y = 213; buttons[27].width = 50; buttons[27].height = 18; buttons[27].color = 0;
 
