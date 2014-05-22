@@ -8,6 +8,8 @@
 #include "line.h"
 #include "curve.h"
 
+#include <stdarg.h> //variable arguments handling
+
 #define TYPE_CIRCLE 1
 #define TYPE_RECT 2
 #define TYPE_POLYGON 3
@@ -21,7 +23,7 @@ typedef struct{
 	void *object;
 }Shape;
 
-Shape shape_create();
+Shape shape_create(int num, ...);
 
 void shape_translate(Shape* s, int dx, int dy);
 void shape_rotate(Shape* s, float deg);

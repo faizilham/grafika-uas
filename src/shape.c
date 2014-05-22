@@ -1,11 +1,64 @@
 #include "shape.h"
 
-Shape shape_create(){
+Shape shape_create(int num, ...){
+	Shape s;
+	va_list arglist;
 	
+	va_start(arglist,num);
+	
+	//get shape type
+	int shape_type = va_arg(arglist,int);
+	s.type = shape_type;
+	
+	switch(shape_type){
+		case TYPE_CIRCLE:{
+			int _x = va_arg(arglist,int);
+			int _y = va_arg(arglist,int);
+			float r = va_arg(arglist,float);
+			Circ c = circ_create(_x, _y, r);
+			s.object = &c;
+			break;
+		}
+		case TYPE_RECT:{
+			int x1 = va_arg(arglist,int);
+			int y1 = va_arg(arglist,int);
+			int x2 = va_arg(arglist,int);
+			int y2 = va_arg(arglist,int);
+			Rect r = rect_create(x1, y1, x2, y2);
+			s.object = &r;
+			break;
+		}
+		case TYPE_POLYGON:{
+			Point* corner = va_arg(arglist,Point*);
+			int length = va_arg(arglist,int);
+			Poly p = polygon_create(corner, length);
+			s.object = &p;
+			break;
+		}
+		case TYPE_LINE:{
+			int x1 = va_arg(arglist,int);
+			int y1 = va_arg(arglist,int);
+			int x2 = va_arg(arglist,int);
+			int y2 = va_arg(arglist,int);
+			Line l = line_create(x1, y1, x2, y2);
+			s.object = &l;
+			break;
+		}
+		case TYPE_CURVE:{
+			Point* points = va_arg(arglist,Point*);
+			Curve c = curve_create(points);
+			s.object = &c;
+			break;
+		}
+	}
+	
+	va_end(arglist);
+	
+	return s;
 }
 
 void shape_translate(Shape* s, int dx, int dy){
-	switch(s->type){ //definisi tipe shape ada di shape.h
+	switch(s->type){
 		case TYPE_CIRCLE: circ_translate((Circ*)s->object, dx, dy); break;
 		case TYPE_RECT: rect_translate((Rect*)s->object, dx, dy); break;
 		case TYPE_POLYGON: /*polygon_translate((Poly*)s->object, dx, dy);*/ break; //belum ada implementasi

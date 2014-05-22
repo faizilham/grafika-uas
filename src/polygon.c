@@ -49,3 +49,22 @@ void polygon_draw(Poly *p){
 	
 	fill_polygon (p->min.x, p->min.y, p->max.x, p->max.y, p->fill, WHITE);
 }
+
+void polygon_translate(Poly *p, int dx, int dy){
+	for (int i = 0; i < p->neff; ++i){
+		point_translate(&p->corner[i], dx, dy);
+	}
+	
+	point_translate(&p->min, dx, dy);
+	point_translate(&p->max, dx, dy);
+	point_translate(&p->center, dx, dy);
+}
+
+bool polygon_checkCollision(Poly* p, float x, float y){
+	int i, j, c = 0;
+  	for (i = 0, j = p->neff-1; i < p->neff; j = i++) {
+    if ( ((p->corner[i].y>y) != (p->corner[j].y>y)) && (x < (p->corner[j].x-p->corner[i].x) * (y-p->corner[i].y) / (p->corner[j].y-p->corner[i].y) + p->corner[i].x) )
+       	c = !c;
+  	}
+	return c;
+}
