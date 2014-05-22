@@ -8,6 +8,7 @@
 #include "curve.h"
 
 #include "overlay.h"
+#include "export.h"
 
 #define EVENT_NONE 0
 #define EVENT_REDRAW 1
@@ -85,7 +86,6 @@ int main(){
 	cir = circ_create(100, 100, 20);
 	cir.fill = LIGHTGRAY;
 
-
 	r[0] = rect_create(-50, -50, -10, -10);
 	r[0].fill = YELLOW;
 	r[1] = rect_create(10, 10, 50, 50);
@@ -110,6 +110,8 @@ int main(){
 	refresh_buttons(buttons);
 	// main loop
 	printf("a");
+	//export_canvas();
+	
 	while (c != 'q' && c != 'Q'){
 
 		
@@ -211,6 +213,7 @@ int main(){
 		delay(100);
 	}
 	
+	export_canvas();
 	
 	return 0;
 
