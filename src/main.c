@@ -82,11 +82,21 @@ int main(){
 		//printf("a");
 		if (e.button & MOUSE_LEFT){			
 			if (current_event == EVENT_NONE){
+				bool found = false;
 				for (int i = 0; i < 3; ++i){
 					if (rect_checkCollision(&r[i], e.x, e.y)){
 						current_event = EVENT_DRAGGING;
 						current_shape = &r[i];
+						found = true;
 						break;
+					}
+				}
+				if (!found){
+					// check collide dengan button
+					for (int i=0;i<21;i++){
+						if ((buttons[i].x < e.x) && (buttons[i].x + buttons[i].width > e.x) && (buttons[i].y < e.y) && (buttons[i].y + buttons[i].height < e.y )){
+							
+						}
 					}
 				}
 			}else if (current_event = EVENT_DRAGGING){
