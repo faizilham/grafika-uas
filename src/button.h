@@ -5,6 +5,7 @@
 #include "iohandler.h"
 #include "polygon.h"
 #include "rect.h"
+#include "line.h"
 #include "boolean.h"
 
 typedef struct Button {

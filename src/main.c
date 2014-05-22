@@ -18,6 +18,9 @@ Rect* current_shape = NULL;
 
 Button buttons[100];
 
+extern Line l[100];
+extern int nl;
+
 extern Rect r[100];
 extern int nr;
 
@@ -49,8 +52,8 @@ int main(){
 	last.button = MOUSE_NONE;
 	
 	init_graph();
-	
-	cir = circ_create(100, 100, 200);
+	nl = 0;
+	cir = circ_create(100, 100, 20);
 	r[0] = rect_create(-50, -50, -10, -10);
 	r[1] = rect_create(10, 10, 50, 50);
 	r[2] = rect_create(-50, 50, -10, 10);
@@ -110,10 +113,10 @@ int main(){
 							if (i <= 15){
 
 							}
-							else if ( i <= 21) {
-
+							else if (i <= 21) {
 								int *args;
 								buttons[i].callback((void*) args);
+								
 							}
 						}
 					}
