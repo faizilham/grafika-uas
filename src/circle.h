@@ -8,6 +8,7 @@ typedef struct{
 	float radius;
 	Point center, min, max; // center for pivot, min-max for boundary check
 	int color, fill;
+	int z;
 } Circ;
 
 Circ circ_create(int _x, int _y, float r);

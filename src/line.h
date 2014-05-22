@@ -8,6 +8,7 @@ typedef struct{
 	Point p1, p2;
 	Point center;
 	int color;
+	int z;
 } Line;
 
 Line line_create(int x1, int y1, int x2, int y2);

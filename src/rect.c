@@ -4,6 +4,7 @@
 
 Rect r[100];
 int nr;
+extern int current_max_c;
 
 void rect_setMinMax(Rect* r){
 	r->min = r->corner[0];
