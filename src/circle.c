@@ -40,10 +40,12 @@ void circ_scale(Circ* c, float scale){
 }
 
 bool circ_checkCollision(Circ* c, float x, float y){
+	bool inside = (x*x + y*y < (c->radius)*(c->radius));
+	/*
 	float x1 = c->min.x; float y1 = c->min.y;
 	float x2 = c->max.x; float y2 = c->max.y;
-
-	return in_rectangle(x,y,x1,y1,x2,y2);
+	*/
+	return inside;//in_rectangle(x,y,x1,y1,x2,y2);
 }
 
 void circ_draw(Circ* c){
