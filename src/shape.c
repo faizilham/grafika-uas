@@ -14,7 +14,7 @@ Shape shape_create(int num, ...){
 		case TYPE_CIRCLE:{
 			int _x = va_arg(arglist,int);
 			int _y = va_arg(arglist,int);
-			float r = va_arg(arglist,float);
+			float r = (float) va_arg(arglist,double);
 			Circ c = circ_create(_x, _y, r);
 			s.object = &c;
 			break;
