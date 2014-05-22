@@ -35,7 +35,7 @@ void line_scale(Line* l, float scale){
 
 bool line_checkCollision(Line* l, float x, float y){
 	int x1 = min(l->p1.x, l->p2.x); int y1 = min(l->p1.y, l->p2.y); 
-	int x2 = min(l->p1.x, l->p2.x); int y2 = max(l->p1.y, l->p2.y); 
+	int x2 = max(l->p1.x, l->p2.x); int y2 = max(l->p1.y, l->p2.y); 
 	
 	return in_rectangle(x,y,x1,y1,x2,y2);
 }

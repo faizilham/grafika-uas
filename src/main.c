@@ -150,15 +150,43 @@ int main(){
 		if (e.button & MOUSE_LEFT){			
 			if (current_event == EVENT_NONE){
 				bool found = false;
-				// check collide dengan rectangle
-				for (int i = 0; i < nr; ++i){
-					if (rect_checkCollision(&r[i], e.x, e.y)){
+				// check collide dengan garis
+				for (int i=0; i < nl; i++){
+					if (line_checkCollision(&l[i], e.x, e.y)){
 						current_event = EVENT_DRAGGING;
-						//current_shape = &r[i];
-						current_type_shape = 2;
+						current_type_shape = 0;
 						current_i = i;
 						found = true;
 						break;
+					}
+				}
+
+				// check collide dengan curve
+				if (!found){
+					for (int i = 0; i < ncu; ++i){
+						if (curve_checkCollision(&cu[i], e.x, e.y)){
+							current_event = EVENT_DRAGGING;
+							//current_shape = &r[i];
+							current_type_shape = 1;
+							current_i = i;
+							found = true;
+							break;
+						}
+					}
+				}
+
+
+				// check collide dengan rectangle
+				if (!found){
+					for (int i = 0; i < nr; ++i){
+						if (rect_checkCollision(&r[i], e.x, e.y)){
+							current_event = EVENT_DRAGGING;
+							//current_shape = &r[i];
+							current_type_shape = 2;
+							current_i = i;
+							found = true;
+							break;
+						}
 					}
 				}
 				// check collide dengan circle
@@ -189,11 +217,11 @@ int main(){
 				}
 				// check collide dengan button
 				if (!found){
-					for (int i=0;i<21;i++){
+					for (int i=0;i<30;i++){
 						if (button_checkcollision(buttons[i],e.x,e.y)){
 
 							// action fill
-							if (i <= 15){
+							if (i < 16){
 								if (current_type_shape == 2){
 									r[current_i].fill = i;
 								}
@@ -203,10 +231,9 @@ int main(){
 								if (current_type_shape == 4){
 									p[current_i].fill = i;
 								}
-								refresh_canvas();
-								refresh_buttons(buttons);
+								
 							}
-							else if (i <= 21) {
+							else if (i < 30) {
 								buttons[i].border = 14;
 								refresh_buttons(buttons);
 								
@@ -216,12 +243,18 @@ int main(){
 								buttons[i].border = 15;
 								refresh_buttons(buttons);
 							}
+							refresh_canvas();
+							refresh_buttons(buttons);
 							break;
 						}
 					}
 				}
 			}else if (current_event = EVENT_DRAGGING){
-				if (current_type_shape == 2)
+				if (current_type_shape == 0)
+					line_translate(&l[current_i], e.x - last.x, e.y - last.y);
+				else if (current_type_shape == 1)
+					curve_translate(&cu[current_i], e.x - last.x, e.y - last.y);
+				else if (current_type_shape == 2)
 					rect_translate(&r[current_i], e.x - last.x, e.y - last.y);
 				else if (current_type_shape == 3)
 					circ_translate(&ci[current_i], e.x - last.x, e.y - last.y);
@@ -250,7 +283,7 @@ int main(){
 		delay(100);
 	}
 	
-	export_canvas();
+	//export_canvas();
 	
 	return 0;
 
