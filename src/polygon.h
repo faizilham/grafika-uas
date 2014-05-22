@@ -5,7 +5,7 @@
 #include "point.h"
 
 typedef struct Poly{
-	Point corner[100];
+	Point corner[30];
 	Point center, min, max; // center for pivot, min-max for boundary check
 	int color, fill,neff;
 } Poly;
