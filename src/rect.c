@@ -2,6 +2,9 @@
 #include "helper.h"
 #include "libgraph.h"
 
+Rect r[100];
+int nr;
+
 void rect_setMinMax(Rect* r){
 	r->min = r->corner[0];
 	r->max = r->corner[0];

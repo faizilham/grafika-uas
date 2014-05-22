@@ -1,5 +1,8 @@
 #include "polygon.h"
 
+Poly p[100];
+int np;
+
 void polygon_setMinMax(Poly *p){
 	p->min = p->corner[0];
 	p->max = p->corner[0];

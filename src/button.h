@@ -2,7 +2,10 @@
 #define BUTTON_H
 
 #include "libgraph.h"
+#include "iohandler.h"
 #include "polygon.h"
+#include "rect.h"
+#include "boolean.h"
 
 typedef struct Button {
    int x;
@@ -17,6 +20,7 @@ typedef struct Button {
 
 
 void button_draw();
+bool button_checkcollision(Button button,int x,int y);
 void buttonaction_scaleup(void* args);
 void buttonaction_scaldown(void* args);
 void buttonaction_rotateleft(void* args);

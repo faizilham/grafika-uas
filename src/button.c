@@ -1,5 +1,11 @@
 #include "button.h"
 
+extern Rect r[100];
+extern int nr;
+extern Poly p[100];
+extern int np;
+
+
 void button_draw(Button button){
 	draw_line(button.x,button.y,button.x+button.width,button.y,15);
 	draw_line(button.x+button.width,button.y,button.x+button.width,button.y+button.height,15);
@@ -8,6 +14,10 @@ void button_draw(Button button){
 	fill(button.x+1,button.y+1,button.color,15);
 	if (button.icon != NULL)
 		polygon_draw(button.icon);
+}
+
+bool button_checkcollision(Button button,int x,int y){
+	return (button.x < x) && (x < button.x+button.width) && (button.y < y) && (y < button.y+button.width);
 }
 
 
@@ -50,7 +60,22 @@ void buttonaction_createcurve(void* args){
 }
 
 void buttonaction_createsquare(void* args){
-
+	mevent_t e;
+	delay(100);
+	do {
+		get_mouse_event(&e);
+	} while (!(e.button & MOUSE_LEFT));
+	int x1 = e.x;
+	int y1 = e.y;
+	delay(100);
+	do {
+		get_mouse_event(&e);
+	} while (!(e.button & MOUSE_LEFT));
+	int x2 = e.x;
+	int y2 = e.y;
+	r[nr] = rect_create(x1, y1, x2, y2);
+	nr++;
+	rect_draw(&r[nr-1]);
 }
 
 void buttonaction_createcircle(void* args){
@@ -58,7 +83,23 @@ void buttonaction_createcircle(void* args){
 }
 
 void buttonaction_createpolygon(void* args){
-
+	mevent_t e;
+	Point corner[100];
+	int i = 0;
+	delay(100);
+	do {
+		get_mouse_event(&e);
+		if (e.button & MOUSE_LEFT){
+			corner[i].x = e.x;
+			corner[i].y = e.y;
+			i++;
+			//outtextxy(i*3, 0, "o");
+			delay(100);
+		}
+	} while (!(e.button & MOUSE_RIGHT));
+	p[np] = polygon_create(corner,i);
+	//outtextxy(100,100,"ok");
+	np++;
 }
 
 void buttonaction_fill(void* args){
@@ -79,8 +120,8 @@ void init_button(Button* buttons){
 	buttons[6].x = 250; buttons[6].y = 210; buttons[6].width = 20; buttons[6].height = 20; buttons[6].color = 6; buttons[6].callback = buttonaction_fill;
 	buttons[7].x = 275; buttons[7].y = 210; buttons[7].width = 20; buttons[7].height = 20; buttons[7].color = 7; buttons[7].callback = buttonaction_fill;
 
-	buttons[ 8].x = 100; buttons[ 8].y = 185; buttons[ 8].width = 20; buttons[ 8].height = 20; buttons[ 8].color =  8; buttons[8].callback = buttonaction_fill;
-	buttons[ 9].x = 125; buttons[ 9].y = 185; buttons[ 9].width = 20; buttons[ 9].height = 20; buttons[ 9].color =  9; buttons[9].callback = buttonaction_fill;
+	buttons[ 8].x = 100; buttons[ 8].y = 185; buttons[ 8].width = 20; buttons[ 8].height = 20; buttons[ 8].color =  8; buttons[ 8].callback = buttonaction_fill;
+	buttons[ 9].x = 125; buttons[ 9].y = 185; buttons[ 9].width = 20; buttons[ 9].height = 20; buttons[ 9].color =  9; buttons[ 9].callback = buttonaction_fill;
 	buttons[10].x = 150; buttons[10].y = 185; buttons[10].width = 20; buttons[10].height = 20; buttons[10].color = 10; buttons[10].callback = buttonaction_fill;
 	buttons[11].x = 175; buttons[11].y = 185; buttons[11].width = 20; buttons[11].height = 20; buttons[11].color = 11; buttons[11].callback = buttonaction_fill;
 	buttons[12].x = 200; buttons[12].y = 185; buttons[12].width = 20; buttons[12].height = 20; buttons[12].color = 12; buttons[12].callback = buttonaction_fill;
