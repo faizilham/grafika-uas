@@ -1,5 +1,6 @@
 #include "button.h"
 #include <math.h>
+#include "export.h"
 
 extern Line l[100];
 extern int nl;
