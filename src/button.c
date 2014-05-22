@@ -305,16 +305,45 @@ void init_button(Button* buttons){
 	buttons[20].callback = buttonaction_createpolygon;
 	
 	buttons[21].x = -80; buttons[21].y = 200; buttons[21].width = 20; buttons[21].height = 20; buttons[21].color = 0;
+	Point corner6[30];
+	corner6[0].x = -70; corner6[0].y = 210; corner6[1].x = -70; corner6[1].y = 215; corner6[2].x = -70; corner6[2].y = 205;
+	corner6[3].x = -70; corner6[3].y = 210; corner6[4].x = -65; corner6[4].y = 210; corner6[5].x = -75; corner6[5].y = 210;
+	polygon6 = polygon_create(corner6,6);
+	buttons[21].icon = &polygon6;
+
 
 	buttons[22].x = -55; buttons[22].y = 200; buttons[22].width = 20; buttons[22].height = 20; buttons[22].color = 0;
+	Point corner7[30];
+	corner7[0].x = -50; corner7[0].y = 210; corner7[1].x = -40; corner7[1].y = 210;
+	polygon7 = polygon_create(corner7,2);
+	buttons[22].icon = &polygon7;
+
 
 	buttons[23].x = -25; buttons[23].y = 200; buttons[23].width = 20; buttons[23].height = 20; buttons[23].color = 0;
+	Point corner8[30];
+	corner8[0].x = -15; corner8[0].y = 210; corner8[1].x = -15; corner8[1].y = 215; corner8[2].x = -15; corner8[2].y = 205;
+	corner8[3].x = -15; corner8[3].y = 210; corner8[4].x = -10; corner8[4].y = 210; corner8[5].x = -20; corner8[5].y = 210;
+	polygon8 = polygon_create(corner8,6);
+	buttons[23].icon = &polygon8;
 
 	buttons[24].x = 0; buttons[24].y = 200; buttons[24].width = 20; buttons[24].height = 20; buttons[24].color = 0;
+	Point corner9[30];
+	corner9[0].x = 5; corner9[0].y = 210; corner9[1].x = 15; corner9[1].y = 210;
+	polygon9 = polygon_create(corner9,2);
+	buttons[24].icon = &polygon9;
 
 	buttons[25].x = 30; buttons[25].y = 200; buttons[25].width = 20; buttons[25].height = 20; buttons[25].color = 0;
+	Point corner10[30];
+	corner10[0].x = 40; corner10[0].y = 210; corner10[1].x = 40; corner10[1].y = 215; corner10[2].x = 40; corner10[2].y = 205;
+	corner10[3].x = 40; corner10[3].y = 210; corner10[4].x = 45; corner10[4].y = 210; corner10[5].x = 35; corner10[5].y = 210;
+	polygon10 = polygon_create(corner10,6);
+	buttons[25].icon = &polygon10;
 
 	buttons[26].x = 55; buttons[26].y = 200; buttons[26].width = 20; buttons[26].height = 20; buttons[26].color = 0;
+	Point corner11[30];
+	corner11[0].x = 60; corner11[0].y = 210; corner11[1].x = 70; corner11[1].y = 210;
+	polygon11 = polygon_create(corner11,2);
+	buttons[26].icon = &polygon11;
 
 	buttons[27].x = -142; buttons[27].y = 213; buttons[27].width = 50; buttons[27].height = 18; buttons[27].color = 0;
 
