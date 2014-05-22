@@ -67,6 +67,8 @@ void buttonaction_fill(void* args){
 	int color = ((int*)args)[2];
 }
 
+Poly polygon,polygon2,polygon3,polygon4,polygon5;
+
 void init_button(Button* buttons){
 	buttons[0].x = 100; buttons[0].y = 210; buttons[0].width = 20; buttons[0].height = 20; buttons[0].color = 0;
 	buttons[1].x = 125; buttons[1].y = 210; buttons[1].width = 20; buttons[1].height = 20; buttons[1].color = 1;
@@ -85,41 +87,39 @@ void init_button(Button* buttons){
 	buttons[13].x = 225; buttons[13].y = 185; buttons[13].width = 20; buttons[13].height = 20; buttons[13].color = 13;
 	buttons[14].x = 250; buttons[14].y = 185; buttons[14].width = 20; buttons[14].height = 20; buttons[14].color = 14;
 	buttons[15].x = 275; buttons[15].y = 185; buttons[15].width = 20; buttons[15].height = 20; buttons[15].color = 15;
-	for (int i=0;i<16;i++)
-		button_draw(buttons[i]);
+	
 
 	buttons[16].x = -300; buttons[16].y = 200; buttons[16].width = 25; buttons[16].height = 25; buttons[16].color = 0;
 	Point corner[30];
 	corner[0].x = -295; corner[0].y = 205; corner[1].x = -280; corner[1].y = 220;
-	Poly polygon;
 	polygon = polygon_create(corner,2);
 	buttons[16].icon = &polygon;
 	
 	buttons[17].x = -270; buttons[17].y = 200; buttons[17].width = 25; buttons[17].height = 25; buttons[17].color = 0;
-	corner[0].x = -265; corner[0].y = 205; corner[1].x = -250; corner[1].y = 220;
-	Poly polygon2;
-	polygon2 = polygon_create(corner,2);
+	Point corner2[30];
+	corner2[0].x = -265; corner2[0].y = 205; corner2[1].x = -250; corner2[1].y = 220;
+	polygon2 = polygon_create(corner2,2);
 	buttons[17].icon = &polygon2;
 
 	buttons[18].x = -240; buttons[18].y = 200; buttons[18].width = 25; buttons[18].height = 25; buttons[18].color = 0;
-	corner[0].x = -235; corner[0].y = 205; corner[1].x = -235; corner[1].y = 220;
-	corner[2].x = -220; corner[2].y = 220; corner[3].x = -220; corner[3].y = 205;
-	Poly polygon3;
-	polygon3 = polygon_create(corner,4);
+	Point corner3[30];
+	corner3[0].x = -235; corner3[0].y = 205; corner3[1].x = -235; corner3[1].y = 220;
+	corner3[2].x = -220; corner3[2].y = 220; corner3[3].x = -220; corner3[3].y = 205;
+	polygon3 = polygon_create(corner3,4);
 	buttons[18].icon = &polygon3;
 
 	buttons[19].x = -210; buttons[19].y = 200; buttons[19].width = 25; buttons[19].height = 25; buttons[19].color = 0;
-	corner[0].x = -205; corner[0].y = 205; corner[1].x = -190; corner[1].y = 220;
-	Poly polygon4;
-	polygon4 = polygon_create(corner,2);
+	Point corner4[30];
+	corner4[0].x = -205; corner4[0].y = 205; corner4[1].x = -190; corner4[1].y = 220;
+	polygon4 = polygon_create(corner4,2);
 	buttons[19].icon = &polygon4;
 
 	buttons[20].x = -180; buttons[20].y = 200; buttons[20].width = 25; buttons[20].height = 25; buttons[20].color = 0;
-	corner[0].x = -172; corner[0].y = 205; corner[1].x = -163; corner[1].y = 205;
-	corner[2].x = -160; corner[2].y = 215; corner[3].x = -168; corner[3].y = 220;
-	corner[4].x = -175; corner[4].y = 215;
-	Poly polygon5;
-	polygon5 = polygon_create(corner,5);
+	Point corner5[30];
+	corner5[0].x = -172; corner5[0].y = 205; corner5[1].x = -163; corner5[1].y = 205;
+	corner5[2].x = -160; corner5[2].y = 215; corner5[3].x = -168; corner5[3].y = 220;
+	corner5[4].x = -175; corner5[4].y = 215;
+	polygon5 = polygon_create(corner5,5);
 	buttons[20].icon = &polygon5;
 
 	// buttons[16].x = -300; buttons[16].y = 200; buttons[16].width = 25; buttons[16].height = 25; buttons[16].color = 0;
@@ -139,9 +139,13 @@ void init_button(Button* buttons){
 
 
 
-	button_draw(buttons[16]);
-	button_draw(buttons[17]);
-	button_draw(buttons[18]);
-	button_draw(buttons[19]);
-	button_draw(buttons[20]);
+	// for (int i=0;i<21;i++)
+	// 	button_draw(buttons[i]);
+}
+
+void refresh_buttons(Button* buttons){
+	//printf("helllo");
+	for (int i=0;i<21;i++)
+		button_draw(buttons[i]);
+	//printf("helllo");
 }

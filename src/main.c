@@ -38,6 +38,7 @@ void refresh_canvas(){
 }
 
 int main(){
+	printf("a");
 	char c = 0; mevent_t e, last;
 	last.button = MOUSE_NONE;
 	
@@ -62,19 +63,23 @@ int main(){
 	
 	refresh_canvas();
 	init_button(buttons);
+	;
 	// main loop
+	printf("a");
 	while (c != 'q' && c != 'Q'){
-		
+		refresh_buttons(buttons);
+		printf("a");
 		if (current_event != EVENT_NONE){
 			refresh_canvas();
 			if (current_event == EVENT_REDRAW){
 				current_event = EVENT_NONE;
 			}
 		}
-		
+		//refresh_buttons(buttons);
 		// mouse process
-		
+		//printf("a");
 		get_mouse_event(&e);
+		//printf("a");
 		if (e.button & MOUSE_LEFT){			
 			if (current_event == EVENT_NONE){
 				for (int i = 0; i < 3; ++i){
@@ -101,6 +106,7 @@ int main(){
 		}else{
 			current_event = EVENT_NONE;
 			current_shape = NULL;
+			//refresh_buttons(buttons);
 		}
 		
 		last = e;
