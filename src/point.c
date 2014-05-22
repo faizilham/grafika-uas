@@ -47,3 +47,19 @@ void point_scaleTo(Point* p, float sx, float sy, Point center){
 void point_linedraw(Point p1, Point p2, int color){
 	draw_line(p1.x, p1.y, p2.x, p2.y, color);
 }
+
+Point point_add(Point p1, Point p2){
+	Point p;
+	p.x = p1.x + p2.x;
+	p.y = p1.y + p2.y;
+	
+	return p;
+}
+
+Point point_mul(Point p1, float factor){
+	Point p;
+	p.x = p1.x * factor;
+	p.y = p1.y * factor;
+	
+	return p;
+}

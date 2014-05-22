@@ -5,6 +5,7 @@
 #include "line.h"
 #include "rect.h"
 #include "circle.h"
+#include "curve.h"
 
 #include "overlay.h"
 
@@ -20,9 +21,14 @@ Button buttons[100];
 Rect r[3];
 Circ cir;
 Array arr_rect; //array of rect for overlaying
+
+Curve crv;
+
 void refresh_canvas(){
 	cleardevice();
-		
+	
+	curve_draw(&crv);
+	
 	for (int i = 0; i < 3; ++i){
 		rect_draw(&r[i]);
 	}
@@ -43,6 +49,12 @@ int main(){
 	last.button = MOUSE_NONE;
 	
 	init_graph();
+	
+	crv.color = 15;
+	curve_setPoint(&crv, 0, -250, 0);
+	curve_setPoint(&crv, 1, -150, 100);
+	curve_setPoint(&crv, 2, -100, -100);
+	curve_setPoint(&crv, 3, -50, 0);
 	
 	cir = circ_create(100, 100, 200);
 	r[0] = rect_create(-50, -50, -10, -10);

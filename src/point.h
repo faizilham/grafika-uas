@@ -19,4 +19,7 @@ void point_scaleTo(Point* p, float sx, float sy, Point center);
 
 void point_linedraw(Point p1, Point p2, int color);
 
+Point point_add(Point p1, Point p2); // create new point by adding 2 points
+Point point_mul(Point p1, float factor); // create new point by scaling
+
 #endif
