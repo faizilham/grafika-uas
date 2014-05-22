@@ -3,6 +3,7 @@
 
 Line l[100];
 int nl;
+extern int current_max_c;
 
 Line line_create(int x1, int y1, int x2, int y2){
 	Line l;
@@ -14,6 +15,8 @@ Line line_create(int x1, int y1, int x2, int y2){
 	l.center.y = ((float) (y1 + y2)) / 2.f;
 	
 	l.color = WHITE;
+	l.z = current_max_c;
+	current_max_c++;
 	return l;
 }
 

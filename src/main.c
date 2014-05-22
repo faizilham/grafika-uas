@@ -18,6 +18,7 @@
 int current_event = EVENT_NONE;
 int current_type_shape;
 int current_i;
+int current_max_c;
 Rect* current_shape = NULL;
 
 Button buttons[100];
@@ -83,6 +84,7 @@ void refresh_canvas(){
 
 int main(){
 	current_type_shape = -1; //0 = line, 1 = curve, 2 = rect, 3 = circle, 4 = poly
+	current_max_c = 0;
 	printf("a");
 	char c = 0; mevent_t e, last;
 	last.button = MOUSE_NONE;

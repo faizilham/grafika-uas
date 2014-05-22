@@ -556,3 +556,11 @@ void refresh_buttons(Button* buttons){
 	outtextxy(183,59,"export");
 	//printf("helllo");
 }
+
+void buttonaction_load(void* args){
+
+}
+
+void buttonaction_save(void* args){
+
+}

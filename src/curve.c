@@ -5,7 +5,7 @@
 
 Curve cu[100];
 int ncu;
-
+extern int current_max_c;
 
 // recursive bezier
 Point get_bezier(Point* p, int start, int n, float t){
@@ -47,7 +47,8 @@ Curve curve_create(Point* points){
 	}
 	c.color = 15; // default white
 	curve_setCenterMinMax(&c);
-	
+	c.z = current_max_c;
+	current_max_c++;
 	return c;
 }
 

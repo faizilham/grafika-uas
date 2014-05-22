@@ -4,6 +4,7 @@
 
 Circ ci[100];
 int nci;
+extern int current_max_c;
 
 void circ_setMinMax(Circ* c){
 	c->min = c->center;
@@ -26,7 +27,8 @@ Circ circ_create(int _x, int _y, float r){
 	
 	c.fill = BLACK;
 	c.color = WHITE;
-	
+	c.z = current_max_c;
+	current_max_c++;
 	return c;
 }
 

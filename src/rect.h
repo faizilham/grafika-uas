@@ -8,6 +8,7 @@ typedef struct{
 	Point corner[4];
 	Point center, min, max; // center for pivot, min-max for boundary check
 	int color, fill;
+	int z;
 } Rect;
 
 Rect rect_create(int x1, int y1, int x2, int y2);

@@ -7,6 +7,7 @@ typedef struct{
 	Point points[4];
 	Point center, min, max;
 	int color;
+	int z;
 } Curve;
 
 Curve curve_create(Point* points);
