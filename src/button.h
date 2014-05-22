@@ -6,6 +6,7 @@
 #include "polygon.h"
 #include "rect.h"
 #include "line.h"
+#include "curve.h"
 #include "boolean.h"
 
 typedef struct Button {
@@ -14,6 +15,7 @@ typedef struct Button {
    int width;
    int height;
    int color; //khusus buat buttoncolor, daripada buat 2 struct :p
+   int border;
    Poly *icon;
    
    void (*callback)(void*);

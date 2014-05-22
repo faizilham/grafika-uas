@@ -38,10 +38,13 @@ void curve_setCenterMinMax(Curve* c){
 Curve curve_create(Point* points){
 	Curve c;
 	for (int i = 0; i < 4; i++){
-		c.points[i] = points[i];
+		c.points[i].x = points[i].x;
+		c.points[i].y = points[i].y;
 	}
 	c.color = 15; // default white
 	curve_setCenterMinMax(&c);
+	
+	return c;
 }
 
 void curve_setPoint(Curve* c, int index, int x, int y){

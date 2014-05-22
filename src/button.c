@@ -9,13 +9,15 @@ extern int np;
 
 
 void button_draw(Button button){
-	draw_line(button.x,button.y,button.x+button.width,button.y,15);
-	draw_line(button.x+button.width,button.y,button.x+button.width,button.y+button.height,15);
-	draw_line(button.x+button.width,button.y+button.height,button.x,button.y+button.height,15);
-	draw_line(button.x,button.y+button.height,button.x,button.y,15);
-	fill(button.x+1,button.y+1,button.color,15);
-	if (button.icon != NULL)
+	draw_line(button.x,button.y,button.x+button.width,button.y,button.border);
+	draw_line(button.x+button.width,button.y,button.x+button.width,button.y+button.height,button.border);
+	draw_line(button.x+button.width,button.y+button.height,button.x,button.y+button.height,button.border);
+	draw_line(button.x,button.y+button.height,button.x,button.y,button.border);
+	fill(button.x+1,button.y+1,button.color,button.border);
+	if (button.icon != NULL){
+		button.icon->color = button.border;
 		polygon_draw(button.icon);
+	}
 }
 
 bool button_checkcollision(Button button,int x,int y){
@@ -55,44 +57,97 @@ void buttonaction_backward(void* args){
 
 void buttonaction_createline(void* args){
 	mevent_t e;
-	delay(100);
+	
 	do {
+		delay(100);
 		get_mouse_event(&e);
 	} while (!(e.button & MOUSE_LEFT));
+	
 	int x1 = e.x;
 	int y1 = e.y;
-	delay(100);
+	
+	paintpix(x1, y1, 15);
+	bool onceUp = false;
+	
 	do {
+		delay(100);
 		get_mouse_event(&e);
-	} while (!(e.button & MOUSE_LEFT));
+		if (e.button == MOUSE_NONE){
+			onceUp = true;
+		}
+	} while (!(e.button & MOUSE_LEFT) || !onceUp );
+	
+	
 	int x2 = e.x;
 	int y2 = e.y;
 	l[nl] = line_create(x1, y1, x2, y2);
+	line_draw(&l[nl]);
 	nl++;
-	line_draw(&l[nl-1]);
+	
 }
 
 void buttonaction_createcurve(void* args){
-
+	mevent_t e;
+	Point points[4];
+	int n = 0;
+	
+	bool onceUp = false;
+	
+	do {
+		delay(100);
+		get_mouse_event(&e);
+		if (onceUp && (e.button & MOUSE_LEFT)){
+			points[n].x = e.x;
+			points[n].y = e.y;
+			n++;
+			
+			paintpix(e.x, e.y, 15);
+			onceUp = false;
+		}else if (e.button == MOUSE_NONE){
+			onceUp = true;
+		}
+		
+	} while (n < 4);
+	
+	for (int i = 0; i < 4; i++){
+		paintpix(points[i].x, points[i].y, 0);
+	}
+	
+	Curve c = curve_create(points);
+	curve_draw(&c);
+	
+	// belom ada fungsi penambahan ke array
 }
 
 void buttonaction_createsquare(void* args){
 	mevent_t e;
-	delay(100);
 	do {
+		delay(100);
 		get_mouse_event(&e);
 	} while (!(e.button & MOUSE_LEFT));
+	
 	int x1 = e.x;
 	int y1 = e.y;
-	delay(100);
+	
+	bool onceUp = false;
+	
+	paintpix(x1, y1, 15);
+	
 	do {
+		delay(100);
 		get_mouse_event(&e);
-	} while (!(e.button & MOUSE_LEFT));
+		
+		if (e.button == MOUSE_NONE){
+			onceUp = true;
+		}
+	} while (!(e.button & MOUSE_LEFT) || !onceUp );
+	
 	int x2 = e.x;
 	int y2 = e.y;
 	r[nr] = rect_create(x1, y1, x2, y2);
+	rect_draw(&r[nr]);
 	nr++;
-	rect_draw(&r[nr-1]);
+	
 }
 
 void buttonaction_createcircle(void* args){
@@ -103,19 +158,27 @@ void buttonaction_createpolygon(void* args){
 	mevent_t e;
 	Point corner[100];
 	int i = 0;
-	delay(100);
+	
+	bool onceUp = false;
+	
 	do {
+		delay(100);
 		get_mouse_event(&e);
-		if (e.button & MOUSE_LEFT){
+		if (onceUp && (e.button & MOUSE_LEFT)){
 			corner[i].x = e.x;
 			corner[i].y = e.y;
 			i++;
-			//outtextxy(i*3, 0, "o");
-			delay(100);
+			
+			paintpix(e.x, e.y, 15);
+			onceUp = false;
+		}else if (e.button == MOUSE_NONE){
+			onceUp = true;
 		}
+		
 	} while (!(e.button & MOUSE_RIGHT));
 	p[np] = polygon_create(corner,i);
 	//outtextxy(100,100,"ok");
+	polygon_draw(&p[np]);
 	np++;
 }
 
@@ -184,6 +247,10 @@ void init_button(Button* buttons){
 	polygon5 = polygon_create(corner5,5);
 	buttons[20].icon = &polygon5;
 	buttons[20].callback = buttonaction_createpolygon;
+	
+	for (int i = 0; i < 21; ++i){
+		buttons[i].border = 15;
+	}
 
 	// buttons[16].x = -300; buttons[16].y = 200; buttons[16].width = 25; buttons[16].height = 25; buttons[16].color = 0;
 	// Point corner[100];
