@@ -36,34 +36,36 @@ bool button_checkcollision(Button button,int x,int y){
 
 void buttonaction_scaleup(void* args){
 	if (current_type_shape == 0){
-
+		line_scale(&l[current_i],1.1);
 	}
 	else if (current_type_shape == 1){
-
+		curve_scale(&cu[current_i],1.1);
 	}
 	else if (current_type_shape == 2){
-
+		rect_scale(&r[current_i],1.1);
 	}
 	else if (current_type_shape == 3){
-
+		circ_scale(&ci[current_i],1.1);
 	}
 	else if (current_type_shape == 4){
-		
+
 	}
 }
 
-void buttonaction_scaldown(void* args){
+void buttonaction_scaledown(void* args){
+	float scale = 10;
+	scale/=11;
 	if (current_type_shape == 0){
-
+		line_scale(&l[current_i],scale);
 	}
 	else if (current_type_shape == 1){
-
+		curve_scale(&cu[current_i],scale);
 	}
 	else if (current_type_shape == 2){
-
+		rect_scale(&r[current_i],scale);
 	}
 	else if (current_type_shape == 3){
-
+		circ_scale(&ci[current_i],scale);
 	}
 	else if (current_type_shape == 4){
 		
@@ -72,16 +74,16 @@ void buttonaction_scaldown(void* args){
 
 void buttonaction_rotateleft(void* args){
 	if (current_type_shape == 0){
-
+		line_rotate(&l[current_i],-15);
 	}
 	else if (current_type_shape == 1){
-
+		curve_rotate(&cu[current_i],-15);
 	}
 	else if (current_type_shape == 2){
-
+		rect_rotate(&r[current_i],-15);
 	}
 	else if (current_type_shape == 3){
-
+		// do nothing
 	}
 	else if (current_type_shape == 4){
 		
@@ -89,17 +91,18 @@ void buttonaction_rotateleft(void* args){
 }
 
 void buttonaction_rotateright(void* args){
+	outtextxy(100,100,"oi");
 	if (current_type_shape == 0){
-
+		line_rotate(&l[current_i],15);
 	}
 	else if (current_type_shape == 1){
-
+		curve_rotate(&cu[current_i],15);
 	}
 	else if (current_type_shape == 2){
-
+		rect_rotate(&r[current_i],15);
 	}
 	else if (current_type_shape == 3){
-
+		//Do nothing
 	}
 	else if (current_type_shape == 4){
 		
@@ -323,6 +326,10 @@ void buttonaction_createpolygon(void* args){
 	np++;
 }
 
+void buttonaction_export(void* args){
+	export_canvas();
+}
+
 void buttonaction_fill(void* args){
 	int shape_type = ((int*)args)[0];
 	int shape_id = ((int*)args)[1];
@@ -372,11 +379,13 @@ void init_button(Button* buttons){
 	// curve button
 	
 	buttons[17].x = -270; buttons[17].y = 200; buttons[17].width = 25; buttons[17].height = 25; buttons[17].color = 0;
+
 	Point corner2[4];
 	corner2[0].x = -265; corner2[0].y = 205; corner2[1].x = -265; corner2[1].y = 212; corner2[2].x = -257; corner2[2].y = 220; corner2[3].x = -250; corner2[3].y = 220;
 	curv_icon = curve_create(corner2);
 	//buttons[17].icon = &polygon2;
 	shape_setObject(&buttons[17].icon, TYPE_CURVE, &curv_icon);
+
 	buttons[17].callback = buttonaction_createcurve;
 	
 	// rect button
@@ -392,11 +401,11 @@ void init_button(Button* buttons){
 	
 	// circ button
 
-	buttons[19].x = -210; buttons[19].y = 200; buttons[19].width = 25; buttons[19].height = 25; buttons[19].color = 0;
-	
+	buttons[19].x = -210; buttons[19].y = 200; buttons[19].width = 25; buttons[19].height = 25; buttons[19].color = 0;	
 	circ_icon = circ_create(-197, 212, 7);
 	//buttons[19].icon = &polygon4;
 	shape_setObject(&buttons[19].icon, TYPE_CIRCLE, &circ_icon);
+
 	buttons[19].callback = buttonaction_createcircle;
 	
 	// poly button
@@ -418,16 +427,23 @@ void init_button(Button* buttons){
 	corner6[0].x = -70; corner6[0].y = 210; corner6[1].x = -70; corner6[1].y = 215; corner6[2].x = -70; corner6[2].y = 205;
 	corner6[3].x = -70; corner6[3].y = 210; corner6[4].x = -65; corner6[4].y = 210; corner6[5].x = -75; corner6[5].y = 210;
 	polygon6 = polygon_create(corner6,6);
-	//buttons[21].icon = &polygon6;
+
 	shape_setObject(&buttons[21].icon, TYPE_POLYGON, &polygon6);
 	// rotate - button
+
+	buttons[21].callback = buttonaction_rotateright;
+
 
 	buttons[22].x = -55; buttons[22].y = 200; buttons[22].width = 20; buttons[22].height = 20; buttons[22].color = 0;
 	Point corner7[30];
 	corner7[0].x = -50; corner7[0].y = 210; corner7[1].x = -40; corner7[1].y = 210;
 	polygon7 = polygon_create(corner7,2);
+
 	//buttons[22].icon = &polygon7;
 	shape_setObject(&buttons[22].icon, TYPE_POLYGON, &polygon7);
+
+	buttons[22].callback = buttonaction_rotateleft;
+
 
 	// scale + button
 
@@ -436,8 +452,12 @@ void init_button(Button* buttons){
 	corner8[0].x = -15; corner8[0].y = 210; corner8[1].x = -15; corner8[1].y = 215; corner8[2].x = -15; corner8[2].y = 205;
 	corner8[3].x = -15; corner8[3].y = 210; corner8[4].x = -10; corner8[4].y = 210; corner8[5].x = -20; corner8[5].y = 210;
 	polygon8 = polygon_create(corner8,6);
+
 	//buttons[23].icon = &polygon8;
 	shape_setObject(&buttons[23].icon, TYPE_POLYGON, &polygon8);
+
+	buttons[23].callback = buttonaction_scaleup;
+
 
 	// scale - button
 	
@@ -445,8 +465,11 @@ void init_button(Button* buttons){
 	Point corner9[30];
 	corner9[0].x = 5; corner9[0].y = 210; corner9[1].x = 15; corner9[1].y = 210;
 	polygon9 = polygon_create(corner9,2);
-	//buttons[24].icon = &polygon9;
+
 	shape_setObject(&buttons[24].icon, TYPE_POLYGON, &polygon9);
+
+	buttons[24].callback = buttonaction_scaledown;
+
 
 	// order + button
 	
@@ -473,6 +496,7 @@ void init_button(Button* buttons){
 	buttons[28].x = -142; buttons[28].y = 190; buttons[28].width = 50; buttons[28].height = 18; buttons[28].color = 0;
 
 	buttons[29].x = -142; buttons[29].y = 167; buttons[29].width = 50; buttons[29].height = 18; buttons[29].color = 0;
+	buttons[29].callback = buttonaction_export;
 
 	nbutton = 30;
 	for (int i = 0; i < nbutton; ++i){
@@ -515,6 +539,16 @@ void init_button(Button* buttons){
 
 void refresh_buttons(Button* buttons){
 	//printf("helllo");
+	Point corner2[30];
+	corner2[0].x = -265; corner2[0].y = 205; corner2[1].x = -260; corner2[1].y = 220;
+	corner2[2].x = -255; corner2[2].y = 210; corner2[3].x = -250; corner2[3].y = 215;
+
+	Circ circle = circ_create(-198, 212, 8);
+	circ_draw(&circle);
+	//polygon2 = polygon_create(corner2,2);
+	//buttons[17].icon = &polygon2;
+	Curve cur = curve_create(corner2);
+	curve_draw(&cur);
 	for (int i=0;i<nbutton;i++)
 		button_draw(buttons[i]);
 	setcolor(WHITE);

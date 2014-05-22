@@ -20,7 +20,7 @@ typedef struct Button {
 void button_draw();
 bool button_checkcollision(Button button,int x,int y);
 void buttonaction_scaleup(void* args);
-void buttonaction_scaldown(void* args);
+void buttonaction_scaledown(void* args);
 void buttonaction_rotateleft(void* args);
 void buttonaction_rotateright(void* args);
 void buttonaction_forward(void* args);
