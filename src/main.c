@@ -15,6 +15,8 @@
 
 
 int current_event = EVENT_NONE;
+int current_type_shape;
+int current_i;
 Rect* current_shape = NULL;
 
 Button buttons[100];
@@ -45,6 +47,10 @@ void refresh_canvas(){
 	for (int i = 0; i < nr; ++i){
 		rect_draw(&r[i]);
 	}
+
+	for (int i=0;i<np;i++){
+		polygon_draw(&p[i]);
+	}
 	circ_draw(&cir);
 	
 	/*rect overlay test*/
@@ -57,6 +63,7 @@ void refresh_canvas(){
 }
 
 int main(){
+	current_type_shape = -1; //0 = line, 1 = curve, 2 = rect, 3 = circle, 4 = poly
 	printf("a");
 	char c = 0; mevent_t e, last;
 	last.button = MOUSE_NONE;
@@ -123,23 +130,44 @@ int main(){
 		if (e.button & MOUSE_LEFT){			
 			if (current_event == EVENT_NONE){
 				bool found = false;
+				// check collide dengan rectangle
 				for (int i = 0; i < nr; ++i){
 					if (rect_checkCollision(&r[i], e.x, e.y)){
 						current_event = EVENT_DRAGGING;
 						current_shape = &r[i];
+						current_type_shape = 2;
+						current_i = i;
 						found = true;
 						break;
 					}
 				}
+				// check collide dengan polygon
+				if (!found) {
+					for (int i=0;i<np;i++){
+						if (polygon_checkCollision(&p[i], e.x, e.y)){
+							current_event = EVENT_DRAGGING;
+							current_type_shape = 4;
+							current_i = i;
+							found = true;
+							break;
+						}
+					}
+				}
+				// check collide dengan button
 				if (!found){
-					
-					// check collide dengan button
 					for (int i=0;i<21;i++){
 						if (button_checkcollision(buttons[i],e.x,e.y)){
 
 							// action fill
 							if (i <= 15){
-
+								if (current_type_shape == 2){
+									r[current_i].fill = i;
+								}
+								if (current_type_shape == 4){
+									p[current_i].fill = i;
+								}
+								refresh_canvas();
+								refresh_buttons(buttons);
 							}
 							else if (i <= 21) {
 								buttons[i].border = 14;
@@ -151,11 +179,15 @@ int main(){
 								buttons[i].border = 15;
 								refresh_buttons(buttons);
 							}
+							break;
 						}
 					}
 				}
 			}else if (current_event = EVENT_DRAGGING){
-				rect_translate(current_shape, e.x - last.x, e.y - last.y);
+				if (current_type_shape == 2)
+					rect_translate(&r[current_i], e.x - last.x, e.y - last.y);
+				else if (current_type_shape == 4)
+					polygon_translate(&p[current_i], e.x - last.x, e.y - last.y);
 			}
 			
 		}else if (e.button & MOUSE_RIGHT){			
