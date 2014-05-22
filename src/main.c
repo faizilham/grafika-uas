@@ -4,7 +4,7 @@
 
 #include "line.h"
 #include "rect.h"
-
+#include "circle.h"
 
 #define EVENT_NONE 0
 #define EVENT_REDRAW 1
@@ -13,8 +13,10 @@
 
 int current_event = EVENT_NONE;
 Rect* current_shape = NULL;
+
 Button buttons[100];
 Rect r[3];
+Circ cir;
 
 void refresh_canvas(){
 	cleardevice();
@@ -22,6 +24,7 @@ void refresh_canvas(){
 	for (int i = 0; i < 3; ++i){
 		rect_draw(&r[i]);
 	}
+	circ_draw(&cir);
 }
 
 int main(){
@@ -30,7 +33,7 @@ int main(){
 	
 	init_graph();
 	
-	
+	cir = circ_create(100, 100, 200);
 	r[0] = rect_create(-50, -50, -10, -10);
 	r[1] = rect_create(10, 10, 50, 50);
 	r[2] = rect_create(-50, 50, -10, 10);
