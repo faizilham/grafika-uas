@@ -538,17 +538,6 @@ void init_button(Button* buttons){
 }
 
 void refresh_buttons(Button* buttons){
-	//printf("helllo");
-	Point corner2[30];
-	corner2[0].x = -265; corner2[0].y = 205; corner2[1].x = -260; corner2[1].y = 220;
-	corner2[2].x = -255; corner2[2].y = 210; corner2[3].x = -250; corner2[3].y = 215;
-
-	Circ circle = circ_create(-198, 212, 8);
-	circ_draw(&circle);
-	//polygon2 = polygon_create(corner2,2);
-	//buttons[17].icon = &polygon2;
-	Curve cur = curve_create(corner2);
-	curve_draw(&cur);
 	for (int i=0;i<nbutton;i++)
 		button_draw(buttons[i]);
 	setcolor(WHITE);
