@@ -243,6 +243,8 @@ void buttonaction_fill(void* args){
 }
 
 Poly polygon,polygon2,polygon3,polygon4,polygon5;
+Poly polygon6,polygon7,polygon8,polygon9,polygon10,polygon11;
+int nbutton;
 
 void init_button(Button* buttons){
 	buttons[0].x = 100; buttons[0].y = 210; buttons[0].width = 20; buttons[0].height = 20; buttons[0].color = 0; buttons[0].callback = buttonaction_fill;
@@ -302,10 +304,42 @@ void init_button(Button* buttons){
 	buttons[20].icon = &polygon5;
 	buttons[20].callback = buttonaction_createpolygon;
 	
-	for (int i = 0; i < 21; ++i){
+	buttons[21].x = -80; buttons[21].y = 200; buttons[21].width = 20; buttons[21].height = 20; buttons[21].color = 0;
+
+	buttons[22].x = -55; buttons[22].y = 200; buttons[22].width = 20; buttons[22].height = 20; buttons[22].color = 0;
+
+	buttons[23].x = -25; buttons[23].y = 200; buttons[23].width = 20; buttons[23].height = 20; buttons[23].color = 0;
+
+	buttons[24].x = 0; buttons[24].y = 200; buttons[24].width = 20; buttons[24].height = 20; buttons[24].color = 0;
+
+	buttons[25].x = 30; buttons[25].y = 200; buttons[25].width = 20; buttons[25].height = 20; buttons[25].color = 0;
+
+	buttons[26].x = 55; buttons[26].y = 200; buttons[26].width = 20; buttons[26].height = 20; buttons[26].color = 0;
+
+	buttons[27].x = -142; buttons[27].y = 213; buttons[27].width = 50; buttons[27].height = 18; buttons[27].color = 0;
+
+	buttons[28].x = -142; buttons[28].y = 190; buttons[28].width = 50; buttons[28].height = 18; buttons[28].color = 0;
+
+	buttons[29].x = -142; buttons[29].y = 167; buttons[29].width = 50; buttons[29].height = 18; buttons[29].color = 0;
+
+	nbutton = 30;
+	for (int i = 0; i < nbutton; ++i){
 		buttons[i].border = 15;
 	}
-
+	setcolor(WHITE);
+	outtextxy(22,65,"canvas");
+	outtextxy(475,60,"color picker");
+	outtextxy(25,45,"ln");
+	outtextxy(51,45,"crv");
+	outtextxy(82,45,"rec");
+	outtextxy(111,45,"cir");
+	outtextxy(140,45,"poly");
+	outtextxy(242,45,"rotate");
+	outtextxy(303,45,"zoom");
+	outtextxy(353,45,"orde-z");
+	outtextxy(188,13,"load");
+	outtextxy(188,36,"save");
+	outtextxy(183,59,"export");
 	// buttons[16].x = -300; buttons[16].y = 200; buttons[16].width = 25; buttons[16].height = 25; buttons[16].color = 0;
 	// Point corner[100];
 	// corner[0].x = -295; corner[0].y = 205; corner[1].x = -280; corner[1].y = 220;
@@ -329,7 +363,7 @@ void init_button(Button* buttons){
 
 void refresh_buttons(Button* buttons){
 	//printf("helllo");
-	for (int i=0;i<21;i++)
+	for (int i=0;i<nbutton;i++)
 		button_draw(buttons[i]);
 	//printf("helllo");
 }
