@@ -1,6 +1,9 @@
 #include "line.h"
 #include "helper.h"
 
+Line l[100];
+int nl;
+
 Line line_create(int x1, int y1, int x2, int y2){
 	Line l;
 	

@@ -18,7 +18,16 @@ int current_event = EVENT_NONE;
 Rect* current_shape = NULL;
 
 Button buttons[100];
-Rect r[3];
+
+extern Line l[100];
+extern int nl;
+
+extern Rect r[100];
+extern int nr;
+
+extern Poly p[100];
+extern int np;
+
 Circ cir;
 Array arr_rect; //array of rect for overlaying
 
@@ -26,10 +35,10 @@ Curve crv;
 
 void refresh_canvas(){
 	cleardevice();
-	
+
 	curve_draw(&crv);
-	
-	for (int i = 0; i < 3; ++i){
+		
+	for (int i = 0; i < nr; ++i){
 		rect_draw(&r[i]);
 	}
 	circ_draw(&cir);
@@ -57,10 +66,20 @@ int main(){
 	curve_setPoint(&crv, 3, -50, 0);
 	
 	cir = circ_create(100, 100, 200);
+
+	nl = 0;
+
+	cir = circ_create(100, 100, 20);
+	cir.fill = LIGHTGRAY;
+
+
 	r[0] = rect_create(-50, -50, -10, -10);
+	r[0].fill = YELLOW;
 	r[1] = rect_create(10, 10, 50, 50);
+	r[1].fill = MAGENTA;
 	r[2] = rect_create(-50, 50, -10, 10);
-	
+	r[2].fill = CYAN;
+	nr = 3;
 	/*rect overlay test*/
 	array_init(&arr_rect);
 	
@@ -75,14 +94,16 @@ int main(){
 	
 	refresh_canvas();
 	init_button(buttons);
-	;
+	refresh_buttons(buttons);
 	// main loop
 	printf("a");
 	while (c != 'q' && c != 'Q'){
-		refresh_buttons(buttons);
+
+		
 		printf("a");
 		if (current_event != EVENT_NONE){
 			refresh_canvas();
+			refresh_buttons(buttons);
 			if (current_event == EVENT_REDRAW){
 				current_event = EVENT_NONE;
 			}
@@ -90,12 +111,13 @@ int main(){
 		//refresh_buttons(buttons);
 		// mouse process
 		//printf("a");
+		
 		get_mouse_event(&e);
 		//printf("a");
 		if (e.button & MOUSE_LEFT){			
 			if (current_event == EVENT_NONE){
 				bool found = false;
-				for (int i = 0; i < 3; ++i){
+				for (int i = 0; i < nr; ++i){
 					if (rect_checkCollision(&r[i], e.x, e.y)){
 						current_event = EVENT_DRAGGING;
 						current_shape = &r[i];
@@ -104,10 +126,20 @@ int main(){
 					}
 				}
 				if (!found){
+					
 					// check collide dengan button
 					for (int i=0;i<21;i++){
-						if ((buttons[i].x < e.x) && (buttons[i].x + buttons[i].width > e.x) && (buttons[i].y < e.y) && (buttons[i].y + buttons[i].height < e.y )){
-							
+						if (button_checkcollision(buttons[i],e.x,e.y)){
+
+							// action fill
+							if (i <= 15){
+
+							}
+							else if (i <= 21) {
+								int *args;
+								buttons[i].callback((void*) args);
+								
+							}
 						}
 					}
 				}
@@ -117,7 +149,7 @@ int main(){
 			
 		}else if (e.button & MOUSE_RIGHT){			
 			if (current_event == EVENT_NONE){
-				for (int i = 0; i < 3; ++i){
+				for (int i = 0; i < nr; ++i){
 					if (rect_checkCollision(&r[i], e.x, e.y)){
 						rect_rotate(&r[i],45);
 						current_event = EVENT_REDRAW;

@@ -125,15 +125,17 @@ void fill (int x, int y, int fill_color, int boundary_color)
 {
 	int current;
 	current = cgetpixel(x, y);
+	
+	if((x+midx > 0) && (x+midx < getmaxx()) && (midy-y > 0) && (midy-y < getmaxy())){
+		if ((current != boundary_color) &&  (current != fill_color)){
+			setcolor(fill_color);
+			paintpix(x, y, fill_color);
 
-	if ((current != boundary_color) &&  (current != fill_color)){
-		setcolor(fill_color);
-		paintpix(x, y, fill_color);
-
-		fill (x + 1, y, fill_color, boundary_color); //right
-		fill (x - 1,  y, fill_color, boundary_color); //left
-		fill (x, y - 1, fill_color, boundary_color) ; //up
-		fill (x, y + 1, fill_color, boundary_color); //down
+			fill (x + 1, y, fill_color, boundary_color); //right
+			fill (x - 1,  y, fill_color, boundary_color); //left
+			fill (x, y - 1, fill_color, boundary_color) ; //up
+			fill (x, y + 1, fill_color, boundary_color); //down
+		}
 	}
 }
 
@@ -145,15 +147,33 @@ bool isExtremePoint(int x, int y){
 	//neighbouring pixels
 	int left_color = cgetpixel(x-1, y);
 	int right_color = cgetpixel(x+1, y);
+	int top_color = cgetpixel(x, y+1);
+	int bottom_color = cgetpixel(x, y-1);
+	int lefttop_color = cgetpixel(x-1, y+1);
+	int righttop_color = cgetpixel(x+1, y+1);
 	int leftbottom_color = cgetpixel(x-1, y-1);
 	int rightbottom_color = cgetpixel(x+1, y-1);
-	int bottom_color = cgetpixel(x, y-1);
 	
+	//kondisi 1 : titik ekstrim minimum
 	if((left_color != boundary_color)
 		&& (right_color != boundary_color)
 		&& (leftbottom_color != boundary_color)
 		&& (rightbottom_color != boundary_color)
-		&& (bottom_color != boundary_color)){
+		&& (bottom_color != boundary_color)
+		&& (top_color != boundary_color)
+		&& (lefttop_color == boundary_color)
+		&& (righttop_color == boundary_color)){
+			result = true;
+	}
+	//kondisi 2 : titik ekstrim maksimum
+	else if((left_color != boundary_color)
+		&& (right_color != boundary_color)
+		&& (leftbottom_color == boundary_color)
+		&& (rightbottom_color == boundary_color)
+		&& (bottom_color != boundary_color)
+		&& (top_color != boundary_color)
+		&& (lefttop_color != boundary_color)
+		&& (righttop_color != boundary_color)){
 			result = true;
 	}
 	else{
@@ -166,10 +186,14 @@ bool isExtremePoint(int x, int y){
 void fill_polygon (int xmin, int ymin, int xmax, int ymax, int fill_color, int boundary_color){
 //trying to use scan line algorithm
 //horizontal scan line
-	int curr_x, curr_color;
+	int curr_x, curr_color, curr_color_next;
 	
 	//scan line
 	for(int y = ymin+1; y < ymax; y++){
+		if(midy-y < 0){
+			break; //handle out-of-screen condition
+		}
+		
 		curr_x = xmin;
 		bool status = false;
 		//go to the leftmost edge
@@ -178,13 +202,22 @@ void fill_polygon (int xmin, int ymin, int xmax, int ymax, int fill_color, int b
 			curr_x++;
 			curr_color = cgetpixel(curr_x, y);
 		}
-		//found the leftmost edge
+		//found the leftmost edge, go to the "rightmost" leftmost edge
+		curr_color = cgetpixel(curr_x, y);
+		curr_color_next = cgetpixel(curr_x+1, y);
+		while((curr_color == boundary_color) && (curr_color_next == boundary_color)){
+			curr_x++;
+			curr_color = cgetpixel(curr_x, y);
+			curr_color_next = cgetpixel(curr_x+1, y);
+		}
+		
 		if(curr_color == boundary_color){
-			while(curr_x < xmax){
+			while((curr_x < xmax) && (curr_x+midx < getmaxx())){ //handle out-of-screen condition
 				curr_color = cgetpixel(curr_x, y);
 				//if curr_x meets the boundary edge
 				if(curr_color == boundary_color){
-					if(isExtremePoint(curr_x,y) == false){
+					curr_color_next = cgetpixel(curr_x+1, y);
+					if((isExtremePoint(curr_x,y) == false) && (curr_color_next != boundary_color)){
 						status = !status;
 					}
 				}

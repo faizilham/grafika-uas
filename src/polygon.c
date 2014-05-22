@@ -1,5 +1,8 @@
 #include "polygon.h"
 
+Poly p[100];
+int np;
+
 void polygon_setMinMax(Poly *p){
 	p->min = p->corner[0];
 	p->max = p->corner[0];
@@ -43,4 +46,6 @@ void polygon_draw(Poly *p){
 		draw_line(p->corner[i].x,p->corner[i].y,p->corner[i+1].x,p->corner[i+1].y,p->color);
 	}
 	draw_line(p->corner[length-1].x,p->corner[length-1].y,p->corner[0].x,p->corner[0].y,p->color);
+	
+	fill_polygon (p->min.x, p->min.y, p->max.x, p->max.y, p->fill, WHITE);
 }

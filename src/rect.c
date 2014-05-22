@@ -2,6 +2,9 @@
 #include "helper.h"
 #include "libgraph.h"
 
+Rect r[100];
+int nr;
+
 void rect_setMinMax(Rect* r){
 	r->min = r->corner[0];
 	r->max = r->corner[0];
@@ -81,5 +84,5 @@ void rect_draw(Rect* r){
 	
 	point_linedraw(r->corner[3], r->corner[0], r->color);
 	
-	// fillnya belom
+	fill_polygon(r->min.x, r->min.y, r->max.x, r->max.y, r->fill, WHITE);
 }

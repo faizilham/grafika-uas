@@ -1,8 +1,9 @@
 # generic makefile
 
-# the modules
 CC = gcc
 EXT = c
+
+# modules
 MODULES = $(wildcard src/*$(EXT))
 
 LIB = -Llib -lopenbgi -lgdi32
