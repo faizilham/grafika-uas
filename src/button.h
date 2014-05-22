@@ -8,6 +8,7 @@
 #include "line.h"
 #include "curve.h"
 #include "boolean.h"
+#include "circle.h"
 
 typedef struct Button {
    int x;
