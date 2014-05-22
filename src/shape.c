@@ -66,7 +66,7 @@ void shape_translate(Shape* s, int dx, int dy){
 	switch(s->type){
 		case TYPE_CIRCLE: circ_translate((Circ*)s->object, dx, dy); break;
 		case TYPE_RECT: rect_translate((Rect*)s->object, dx, dy); break;
-		case TYPE_POLYGON: /*polygon_translate((Poly*)s->object, dx, dy);*/ break; //belum ada implementasi
+		case TYPE_POLYGON: polygon_translate((Poly*)s->object, dx, dy); break; 
 		case TYPE_LINE: line_translate((Line*)s->object, dx, dy); break;
 		case TYPE_CURVE: curve_translate((Curve*)s->object, dx, dy); break;
 	}
@@ -76,7 +76,7 @@ void shape_rotate(Shape* s, float deg){
 	switch(s->type){
 		case TYPE_CIRCLE: break; //tidak ada rotate pada circle
 		case TYPE_RECT: rect_rotate((Rect*)s->object, deg); break;
-		case TYPE_POLYGON: /*polygon_rotate((Poly*)s->object, deg);*/break; //belum ada implementasi
+		case TYPE_POLYGON: polygon_rotate((Poly*)s->object, deg); break; 
 		case TYPE_LINE: line_rotate((Line*)s->object, deg); break;
 		case TYPE_CURVE: curve_rotate((Curve*)s->object, deg); break;
 	}
@@ -86,7 +86,7 @@ void shape_scale(Shape* s, float scale){
 	switch(s->type){
 		case TYPE_CIRCLE: circ_scale((Circ*)s->object, scale); break;
 		case TYPE_RECT: rect_scale((Rect*)s->object, scale); break;
-		case TYPE_POLYGON: /*polygon_scale((Poly*)s->object, scale);*/break; //belum ada implementasi
+		case TYPE_POLYGON: polygon_scale((Poly*)s->object, scale); break; 
 		case TYPE_LINE: line_scale((Line*)s->object, scale); break;
 		case TYPE_CURVE: curve_scale((Curve*)s->object, scale); break;
 	}
@@ -97,7 +97,7 @@ bool shape_checkCollision(Shape* s, float x, float y){
 	switch(s->type){
 		case TYPE_CIRCLE: result = circ_checkCollision((Circ*)s->object, x, y); break;
 		case TYPE_RECT: result = rect_checkCollision((Rect*)s->object, x, y); break;
-		case TYPE_POLYGON: /*result = polygon_checkCollision((Poly*)s->object, x, y);*/break; //belum ada implementasi
+		case TYPE_POLYGON: result = polygon_checkCollision((Poly*)s->object, x, y); break; 
 		case TYPE_LINE: result = line_checkCollision((Line*)s->object, x, y); break;
 		case TYPE_CURVE: result = curve_checkCollision((Curve*)s->object, x, y); break;
 	}

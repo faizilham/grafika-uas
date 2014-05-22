@@ -60,6 +60,22 @@ void polygon_translate(Poly *p, int dx, int dy){
 	point_translate(&p->center, dx, dy);
 }
 
+void polygon_rotate(Poly* p, float deg){
+	for (int i = 0; i < p->neff; ++i){
+		point_rotateTo(&p->corner[i], deg, p->center);
+	}
+	
+	polygon_setMinMax(p);
+}
+
+void polygon_scale(Poly* p, float scale){
+	for (int i = 0; i < p->neff; ++i){
+		point_scaleTo(&p->corner[i], scale, scale, p->center);
+	}
+	
+	polygon_setMinMax(p);
+}
+
 bool polygon_checkCollision(Poly* p, float x, float y){
 	int i, j, c = 0;
   	for (i = 0, j = p->neff-1; i < p->neff; j = i++) {
