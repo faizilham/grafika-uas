@@ -1,6 +1,6 @@
 /*File : array.c */ //Array implisit statik, dengan elemen tabel terurut membesar
 
-#include "array_polygon.h"
+#include "array_rect.h"
 
 void array_init(Array *array) {
   // initialize size and capacity

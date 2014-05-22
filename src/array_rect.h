@@ -1,6 +1,6 @@
 /*File : array.h */ //ADT Array eksplisit statik, dengan elemen tabel terurut membesar
-#ifndef ARRAYPOLYGON_H
-#define ARRAYPOLYGON_H
+#ifndef ARRAYRECT_H
+#define ARRAYRECT_H
 
 #include <stdio.h>
 

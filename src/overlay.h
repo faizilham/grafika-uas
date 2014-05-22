@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "array_polygon.h"
+#include "array_rect.h"
 
 void doOverlay(Array *array_polygon);
 
