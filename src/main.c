@@ -31,6 +31,12 @@ extern int nr;
 extern Poly p[100];
 extern int np;
 
+extern Circ ci[100];
+extern int nci;
+
+extern Curve cu[100];
+extern int ncu;
+
 Circ cir;
 Array arr_rect; //array of rect for overlaying
 
@@ -44,7 +50,11 @@ void refresh_canvas(){
 	rect_draw(&canvas);
 	
 	curve_draw(&crv);
-		
+	
+	for (int i=0;i<nl;i++){
+		line_draw(&l[i]);
+	}
+
 	for (int i = 0; i < nr; ++i){
 		rect_draw(&r[i]);
 	}
@@ -52,6 +62,14 @@ void refresh_canvas(){
 	for (int i=0;i<np;i++){
 		polygon_draw(&p[i]);
 	}
+
+	for (int i=0;i<nci;i++){
+		circ_draw(&ci[i]);
+	}
+	for (int i=0;i<ncu;i++){
+		curve_draw(&cu[i]);
+	}
+
 	circ_draw(&cir);
 	
 	/*rect overlay test*/
@@ -136,13 +154,27 @@ int main(){
 				for (int i = 0; i < nr; ++i){
 					if (rect_checkCollision(&r[i], e.x, e.y)){
 						current_event = EVENT_DRAGGING;
-						current_shape = &r[i];
+						//current_shape = &r[i];
 						current_type_shape = 2;
 						current_i = i;
 						found = true;
 						break;
 					}
 				}
+				// check collide dengan circle
+				if (!found){
+					for (int i=0;i < nci; i++){
+						if (circ_checkCollision(&ci[i],e.x,e.y)){
+							current_event = EVENT_DRAGGING;
+							current_type_shape = 3;
+							current_i = i;
+							found = true;
+							break;
+						}
+					}
+				}
+
+
 				// check collide dengan polygon
 				if (!found) {
 					for (int i=0;i<np;i++){
@@ -164,6 +196,9 @@ int main(){
 							if (i <= 15){
 								if (current_type_shape == 2){
 									r[current_i].fill = i;
+								}
+								else if (current_type_shape == 3){
+									ci[current_i].fill = i;
 								}
 								if (current_type_shape == 4){
 									p[current_i].fill = i;
@@ -188,6 +223,8 @@ int main(){
 			}else if (current_event = EVENT_DRAGGING){
 				if (current_type_shape == 2)
 					rect_translate(&r[current_i], e.x - last.x, e.y - last.y);
+				else if (current_type_shape == 3)
+					circ_translate(&ci[current_i], e.x - last.x, e.y - last.y);
 				else if (current_type_shape == 4)
 					polygon_translate(&p[current_i], e.x - last.x, e.y - last.y);
 			}
@@ -204,7 +241,7 @@ int main(){
 			}
 		}else{
 			current_event = EVENT_NONE;
-			current_shape = NULL;
+			//current_shape = NULL;
 			//refresh_buttons(buttons);
 		}
 		

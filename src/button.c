@@ -7,7 +7,10 @@ extern Rect r[100];
 extern int nr;
 extern Poly p[100];
 extern int np;
-
+extern Circ ci[100];
+extern int nci;
+extern Curve cu[100];
+extern int ncu;
 
 void button_draw(Button button){
 	draw_line(button.x,button.y,button.x+button.width,button.y,button.border);
@@ -119,9 +122,9 @@ void buttonaction_createcurve(void* args){
 		paintpix(points[i].x, points[i].y, 0);
 	}
 	
-	Curve c = curve_create(points);
-	curve_draw(&c);
-	
+	cu[ncu] = curve_create(points);
+	curve_draw(&cu[ncu]);
+	ncu++;
 	// belom ada fungsi penambahan ke array
 }
 
@@ -195,8 +198,9 @@ void buttonaction_createcircle(void* args){
 	float r = sqrt(pow(x1-x2,2) + pow(y1-y2,2));
 	
 	
-	Circ cir = circ_create(x1, y1, r);
-	circ_draw(&cir);
+	ci[nci] = circ_create(x1, y1, r);
+	circ_draw(&ci[nci]);
+	nci++;
 }
 
 void buttonaction_createpolygon(void* args){
@@ -394,5 +398,19 @@ void refresh_buttons(Button* buttons){
 	//printf("helllo");
 	for (int i=0;i<nbutton;i++)
 		button_draw(buttons[i]);
+	setcolor(WHITE);
+	outtextxy(22,65,"canvas");
+	outtextxy(475,60,"color picker");
+	outtextxy(25,45,"ln");
+	outtextxy(51,45,"crv");
+	outtextxy(82,45,"rec");
+	outtextxy(111,45,"cir");
+	outtextxy(140,45,"poly");
+	outtextxy(242,45,"rotate");
+	outtextxy(303,45,"zoom");
+	outtextxy(353,45,"orde-z");
+	outtextxy(188,13,"load");
+	outtextxy(188,36,"save");
+	outtextxy(183,59,"export");
 	//printf("helllo");
 }

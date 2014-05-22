@@ -3,6 +3,10 @@
 
 #define BEZIER_DELTA 0.02
 
+Curve cu[100];
+int ncu;
+
+
 // recursive bezier
 Point get_bezier(Point* p, int start, int n, float t){
 	if (n == 0){
