@@ -4,7 +4,9 @@
 
 #include "line.h"
 #include "rect.h"
+#include "circle.h"
 
+#include "overlay.h"
 
 #define EVENT_NONE 0
 #define EVENT_REDRAW 1
@@ -13,15 +15,26 @@
 
 int current_event = EVENT_NONE;
 Rect* current_shape = NULL;
+
 Button buttons[100];
 Rect r[3];
-
+Circ cir;
+Array arr_rect; //array of rect for overlaying
 void refresh_canvas(){
 	cleardevice();
 		
 	for (int i = 0; i < 3; ++i){
 		rect_draw(&r[i]);
 	}
+	circ_draw(&cir);
+	
+	/*rect overlay test*/
+	for (int i = 0; i < arr_rect.size; ++i){
+		Rect objRect = array_get(&arr_rect,i);
+		rect_draw(&objRect);
+	}
+	doOverlay(&arr_rect);
+	/*end of rect overlay test*/
 }
 
 int main(){
@@ -30,10 +43,22 @@ int main(){
 	
 	init_graph();
 	
-	
+	cir = circ_create(100, 100, 200);
 	r[0] = rect_create(-50, -50, -10, -10);
 	r[1] = rect_create(10, 10, 50, 50);
 	r[2] = rect_create(-50, 50, -10, 10);
+	
+	/*rect overlay test*/
+	array_init(&arr_rect);
+	
+	Rect r1 = rect_create(-30,-30,20,20);
+	r1.fill = RED;
+	Rect r2 = rect_create(-10,-10,35,35);
+	r2.fill = BLUE;
+	
+	array_append(&arr_rect,r1);
+	array_append(&arr_rect,r2);
+	/*end of rect overlay test*/
 	
 	refresh_canvas();
 	init_button(buttons);
