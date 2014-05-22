@@ -2,6 +2,7 @@
 
 //0 = red, 1 = green, 2 = blue
 unsigned char converttorgb(int pixel, int comp){
+	//printf("Request pixel color %d of component %d\n", pixel, comp);
 	if(pixel == 0){
 		if(comp == 0)
 			return (unsigned char) 0;
@@ -36,7 +37,7 @@ unsigned char converttorgb(int pixel, int comp){
 	}
 	if(pixel == 4){
 		if(comp == 0)
-			return (unsigned char) 0;
+			return (unsigned char) 255;
 		if(comp == 1)
 			return (unsigned char) 0;
 		if(comp == 2)
@@ -48,7 +49,7 @@ unsigned char converttorgb(int pixel, int comp){
 		if(comp == 1)
 			return (unsigned char) 0;
 		if(comp == 2)
-			return (unsigned char) 0;
+			return (unsigned char) 255;
 	}
 	if(pixel == 6){
 		if(comp == 0)
