@@ -4,7 +4,7 @@ CC = gcc
 EXT = c
 
 # modules
-MODULES = $(wildcard src/*$(EXT))
+MODULES = $(wildcard src/*.$(EXT))
 
 LIB = -Llib -lopenbgi -lgdi32
 INCLUDE = -Ilib
