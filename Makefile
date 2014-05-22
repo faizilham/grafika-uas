@@ -1,7 +1,9 @@
 # generic makefile
 
-# the module names
-MODULES = main.c iohandler.c libgraph.c button.c point.c rect.c line.c polygon.c circle.c array_rect.c overlay.c curve.c
+# the modules
+CC = gcc
+EXT = c
+MODULES = $(wildcard src/*$(EXT))
 
 LIB = -Llib -lopenbgi -lgdi32
 INCLUDE = -Ilib
@@ -17,12 +19,9 @@ else
 FLAGS += -O0 -g
 endif
 
-CC = gcc
-EXT = c
-
 # Everything after this is generic, no need to edit
 
-OBJS := ${MODULES:%.$(EXT)=bin/%.o}
+OBJS := ${MODULES:src/%.$(EXT)=bin/%.o}
 
 .PHONY: all run clean
   
