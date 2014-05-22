@@ -24,7 +24,7 @@ void buttonaction_rotateright(void* args);
 void buttonaction_forward(void* args);
 void buttonaction_backward(void* args);
 void buttonaction_createline(void* args);
-void buttonaction_createcurce(void* args);
+void buttonaction_createcurve(void* args);
 void buttonaction_createsquare(void* args);
 void buttonaction_createcircle(void* args);
 void buttonaction_createpolygon(void* args);
