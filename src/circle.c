@@ -2,6 +2,9 @@
 #include "helper.h"
 #include "libgraph.h"
 
+Circ ci[100];
+int nci;
+
 void circ_setMinMax(Circ* c){
 	c->min = c->center;
 	c->max = c->center;

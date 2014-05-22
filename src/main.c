@@ -31,11 +31,15 @@ extern int np;
 Circ cir;
 Array arr_rect; //array of rect for overlaying
 
+Rect canvas;
 Curve crv;
 
 void refresh_canvas(){
 	cleardevice();
-
+	
+	/* Draw canvas boundary */
+	rect_draw(&canvas);
+	
 	curve_draw(&crv);
 		
 	for (int i = 0; i < nr; ++i){
@@ -58,6 +62,8 @@ int main(){
 	last.button = MOUSE_NONE;
 	
 	init_graph();
+	
+	canvas = rect_create(-300, 160, 295, -210);
 	
 	crv.color = 15;
 	curve_setPoint(&crv, 0, -250, 0);
