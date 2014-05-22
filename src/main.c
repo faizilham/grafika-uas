@@ -106,7 +106,7 @@ int main(){
 	while (c != 'q' && c != 'Q'){
 
 		
-		printf("a");
+		//printf("a");
 		if (current_event != EVENT_NONE){
 			refresh_canvas();
 			refresh_buttons(buttons);
@@ -142,9 +142,14 @@ int main(){
 
 							}
 							else if (i <= 21) {
+								buttons[i].border = 14;
+								refresh_buttons(buttons);
+								
 								int *args;
 								buttons[i].callback((void*) args);
 								
+								buttons[i].border = 15;
+								refresh_buttons(buttons);
 							}
 						}
 					}
