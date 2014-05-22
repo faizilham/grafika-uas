@@ -6,6 +6,8 @@ void button_draw(Button button){
 	draw_line(button.x+button.width,button.y+button.height,button.x,button.y+button.height,15);
 	draw_line(button.x,button.y+button.height,button.x,button.y,15);
 	fill(button.x+1,button.y+1,button.color,15);
+	if (button.icon != NULL)
+		polygon_draw(button.icon);
 }
 
 
@@ -85,4 +87,12 @@ void init_button(Button* buttons){
 	buttons[15].x = 275; buttons[15].y = 185; buttons[15].width = 20; buttons[15].height = 20; buttons[15].color = 15;
 	for (int i=0;i<16;i++)
 		button_draw(buttons[i]);
+
+	buttons[16].x = -300; buttons[16].y = 200; buttons[16].width = 25; buttons[16].height = 25; buttons[16].color = 0;
+	Point corner[100];
+	corner[0].x = -295; corner[0].y = 205; corner[1].x = -280; corner[1].y = 220;
+	Poly polygon;
+	polygon = polygon_create(corner,2);
+	buttons[16].icon = &polygon;
+	button_draw(buttons[16]);
 }

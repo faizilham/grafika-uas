@@ -2,6 +2,7 @@
 #define BUTTON_H
 
 #include "libgraph.h"
+#include "polygon.h"
 
 typedef struct Button {
    int x;
@@ -9,7 +10,7 @@ typedef struct Button {
    int width;
    int height;
    int color; //khusus buat buttoncolor, daripada buat 2 struct :p
-   //Polygon icon;
+   Poly *icon;
    
    void (*callback)(void*);
 } Button;
