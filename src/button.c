@@ -11,6 +11,8 @@ extern Circ ci[100];
 extern int nci;
 extern Curve cu[100];
 extern int ncu;
+extern int current_type_shape;
+extern int current_i;
 
 void button_draw(Button button){
 	draw_line(button.x,button.y,button.x+button.width,button.y,button.border);
@@ -30,33 +32,111 @@ bool button_checkcollision(Button button,int x,int y){
 
 
 void buttonaction_scaleup(void* args){
-	int shape_type = ((int*)args)[0];
-	int shape_id = ((int*)args)[1];
+	if (current_type_shape == 0){
+
+	}
+	else if (current_type_shape == 1){
+
+	}
+	else if (current_type_shape == 2){
+
+	}
+	else if (current_type_shape == 3){
+
+	}
+	else if (current_type_shape == 4){
+		
+	}
 }
 
 void buttonaction_scaldown(void* args){
-	int shape_type = ((int*)args)[0];
-	int shape_id = ((int*)args)[1];
+	if (current_type_shape == 0){
+
+	}
+	else if (current_type_shape == 1){
+
+	}
+	else if (current_type_shape == 2){
+
+	}
+	else if (current_type_shape == 3){
+
+	}
+	else if (current_type_shape == 4){
+		
+	}
 }
 
 void buttonaction_rotateleft(void* args){
-	int shape_type = ((int*)args)[0];
-	int shape_id = ((int*)args)[1];
+	if (current_type_shape == 0){
+
+	}
+	else if (current_type_shape == 1){
+
+	}
+	else if (current_type_shape == 2){
+
+	}
+	else if (current_type_shape == 3){
+
+	}
+	else if (current_type_shape == 4){
+		
+	}
 }
 
 void buttonaction_rotateright(void* args){
-	int shape_type = ((int*)args)[0];
-	int shape_id = ((int*)args)[1];
+	if (current_type_shape == 0){
+
+	}
+	else if (current_type_shape == 1){
+
+	}
+	else if (current_type_shape == 2){
+
+	}
+	else if (current_type_shape == 3){
+
+	}
+	else if (current_type_shape == 4){
+		
+	}
 }
 
 void buttonaction_forward(void* args){
-	int shape_type = ((int*)args)[0];
-	int shape_id = ((int*)args)[1];
+	if (current_type_shape == 0){
+
+	}
+	else if (current_type_shape == 1){
+
+	}
+	else if (current_type_shape == 2){
+
+	}
+	else if (current_type_shape == 3){
+
+	}
+	else if (current_type_shape == 4){
+		
+	}
 }
 
 void buttonaction_backward(void* args){
-	int shape_type = ((int*)args)[0];
-	int shape_id = ((int*)args)[1];
+	if (current_type_shape == 0){
+
+	}
+	else if (current_type_shape == 1){
+
+	}
+	else if (current_type_shape == 2){
+
+	}
+	else if (current_type_shape == 3){
+
+	}
+	else if (current_type_shape == 4){
+		
+	}
 }
 
 void buttonaction_createline(void* args){

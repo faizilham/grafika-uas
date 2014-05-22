@@ -40,7 +40,7 @@ void circ_scale(Circ* c, float scale){
 }
 
 bool circ_checkCollision(Circ* c, float x, float y){
-	bool inside = (x*x + y*y < (c->radius)*(c->radius));
+	bool inside = ((x-c->center.x)*(x-c->center.x) + (y-c->center.y)*(y-c->center.y) < (c->radius)*(c->radius));
 	/*
 	float x1 = c->min.x; float y1 = c->min.y;
 	float x2 = c->max.x; float y2 = c->max.y;
