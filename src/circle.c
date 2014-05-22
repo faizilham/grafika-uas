@@ -51,6 +51,6 @@ bool circ_checkCollision(Circ* c, float x, float y){
 }
 
 void circ_draw(Circ* c){
-	draw_ellipse(c->center.x, c->center.y, c->radius, c->radius, WHITE);
-	fill_polygon (c->min.x, c->min.y, c->max.x, c->max.y, c->fill, WHITE);
+	draw_ellipse(c->center.x, c->center.y, c->radius, c->radius, c->color);
+	fill_polygon (c->min.x, c->min.y, c->max.x, c->max.y, c->fill, c->color);
 }

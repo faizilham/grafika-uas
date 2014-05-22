@@ -25,10 +25,15 @@ typedef struct{
 
 Shape shape_create(int num, ...);
 
+void shape_setObject(Shape* s, int type, void *object);
+
 void shape_translate(Shape* s, int dx, int dy);
 void shape_rotate(Shape* s, float deg);
 void shape_scale(Shape* s, float scale);
 bool shape_checkCollision(Shape* s, float x, float y);
+
+void shape_setColor(Shape* s, int color);
+void shape_setFillColor(Shape* s, int fill);
 
 void shape_draw(Shape* s); // drawnya masih langsung digambar aja, blom ada clip/anticlip
 

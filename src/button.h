@@ -3,13 +3,7 @@
 
 #include "libgraph.h"
 #include "iohandler.h"
-#include "polygon.h"
-#include "rect.h"
-#include "line.h"
-#include "curve.h"
-#include "boolean.h"
-#include "circle.h"
-#include "export.h"
+#include "shape.h"
 
 typedef struct Button {
    int x;
@@ -18,9 +12,8 @@ typedef struct Button {
    int height;
    int color; //khusus buat buttoncolor, daripada buat 2 struct :p
    int border;
-   Poly *icon;
-   
    void (*callback)(void*);
+   Shape icon;
 } Button;
 
 
