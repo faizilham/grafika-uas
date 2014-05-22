@@ -50,10 +50,15 @@ int main(){
 	
 	init_graph();
 	
-	cir = circ_create(100, 100, 200);
+	cir = circ_create(100, 100, 50);
+	cir.fill = LIGHTGRAY;
+	
 	r[0] = rect_create(-50, -50, -10, -10);
+	r[0].fill = YELLOW;
 	r[1] = rect_create(10, 10, 50, 50);
+	r[1].fill = MAGENTA;
 	r[2] = rect_create(-50, 50, -10, 10);
+	r[2].fill = CYAN;
 	nr = 3;
 	/*rect overlay test*/
 	array_init(&arr_rect);

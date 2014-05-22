@@ -9,7 +9,7 @@ void circ_setMinMax(Circ* c){
 	c->min.x = c->min.x - c->radius;
 	c->max.x = c->max.x + c->radius;
 	c->min.y = c->min.y - c->radius;
-	c->max.y = c->max.y - c->radius;
+	c->max.y = c->max.y + c->radius;
 }
 
 Circ circ_create(int _x, int _y, float r){
@@ -45,5 +45,5 @@ bool circ_checkCollision(Circ* c, float x, float y){
 
 void circ_draw(Circ* c){
 	draw_ellipse(c->center.x, c->center.y, c->radius, c->radius, WHITE);
-	// fillnya belom
+	fill_polygon (c->min.x, c->min.y, c->max.x, c->max.y, c->fill, WHITE);
 }
