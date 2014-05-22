@@ -1,4 +1,5 @@
 #include "button.h"
+#include <math.h>
 
 extern Line l[100];
 extern int nl;
@@ -61,6 +62,10 @@ void buttonaction_createline(void* args){
 	do {
 		delay(100);
 		get_mouse_event(&e);
+		
+		if (e.button & MOUSE_RIGHT)
+			return;
+		
 	} while (!(e.button & MOUSE_LEFT));
 	
 	int x1 = e.x;
@@ -105,8 +110,9 @@ void buttonaction_createcurve(void* args){
 			onceUp = false;
 		}else if (e.button == MOUSE_NONE){
 			onceUp = true;
+		}else if (e.button & MOUSE_RIGHT){
+			return;
 		}
-		
 	} while (n < 4);
 	
 	for (int i = 0; i < 4; i++){
@@ -124,6 +130,10 @@ void buttonaction_createsquare(void* args){
 	do {
 		delay(100);
 		get_mouse_event(&e);
+		
+		if (e.button & MOUSE_RIGHT)
+			return;
+		
 	} while (!(e.button & MOUSE_LEFT));
 	
 	int x1 = e.x;
@@ -152,21 +162,41 @@ void buttonaction_createsquare(void* args){
 
 void buttonaction_createcircle(void* args){
 	mevent_t e;
-	delay(100);
 	do {
+		delay(100);
 		get_mouse_event(&e);
+		
+		if (e.button & MOUSE_RIGHT)
+			return;
+		
 	} while (!(e.button & MOUSE_LEFT));
+	
 	int x1 = e.x;
 	int y1 = e.y;
-	delay(100);
+	
+	bool onceUp = false;
+	
+	paintpix(x1, y1, 15); // mark center
+	
 	do {
+		delay(100);
 		get_mouse_event(&e);
-	} while (!(e.button & MOUSE_LEFT));
+		
+		if (e.button == MOUSE_NONE){
+			onceUp = true;
+		}
+	} while (!(e.button & MOUSE_LEFT) || !onceUp );
+	
+	paintpix(x1, y1, 0); // demark center
+	
 	int x2 = e.x;
 	int y2 = e.y;
-	l[nl] = line_create(x1, y1, x2, y2);
-	nl++;
-	line_draw(&l[nl-1]);
+	
+	float r = sqrt(pow(x1-x2,2) + pow(y1-y2,2));
+	
+	
+	Circ cir = circ_create(x1, y1, r);
+	circ_draw(&cir);
 }
 
 void buttonaction_createpolygon(void* args){
@@ -184,13 +214,22 @@ void buttonaction_createpolygon(void* args){
 			corner[i].y = e.y;
 			i++;
 			
-			paintpix(e.x, e.y, 15);
+			paintpix(e.x, e.y, 15); // mark
 			onceUp = false;
 		}else if (e.button == MOUSE_NONE){
 			onceUp = true;
 		}
 		
 	} while (!(e.button & MOUSE_RIGHT));
+	
+	if (i < 3){
+		for (int j = 0; j < i; ++j){
+			paintpix(corner[j].x,corner[j].y, 0); // demark
+		}
+	
+		return;
+	}
+	
 	p[np] = polygon_create(corner,i);
 	//outtextxy(100,100,"ok");
 	polygon_draw(&p[np]);
