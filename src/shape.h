@@ -5,10 +5,14 @@
 #include "circle.h"
 #include "rect.h"
 #include "polygon.h"
+#include "line.h"
+#include "curve.h"
 
 #define TYPE_CIRCLE 1
 #define TYPE_RECT 2
 #define TYPE_POLYGON 3
+#define TYPE_LINE 4
+#define TYPE_CURVE 5
 
 typedef struct{
 	int type; //kode tipe shape
