@@ -96,7 +96,22 @@ void buttonaction_createsquare(void* args){
 }
 
 void buttonaction_createcircle(void* args){
-
+	mevent_t e;
+	delay(100);
+	do {
+		get_mouse_event(&e);
+	} while (!(e.button & MOUSE_LEFT));
+	int x1 = e.x;
+	int y1 = e.y;
+	delay(100);
+	do {
+		get_mouse_event(&e);
+	} while (!(e.button & MOUSE_LEFT));
+	int x2 = e.x;
+	int y2 = e.y;
+	l[nl] = line_create(x1, y1, x2, y2);
+	nl++;
+	line_draw(&l[nl-1]);
 }
 
 void buttonaction_createpolygon(void* args){
