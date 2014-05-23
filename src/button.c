@@ -116,37 +116,37 @@ void buttonaction_rotateright(void* args){
 
 void buttonaction_forward(void* args){
 	if (current_type_shape == 0){
-		&l[current_i].z++;
+		l[current_i].z++;
 	}
 	else if (current_type_shape == 1){
-		&cu[current_i].z++;
+		cu[current_i].z++;
 	}
 	else if (current_type_shape == 2){
-		&r[current_i].z++;
+		r[current_i].z++;
 	}
 	else if (current_type_shape == 3){
-		&ci[current_i].z++;
+		ci[current_i].z++;
 	}
 	else if (current_type_shape == 4){
-		&p[current_i].z++;
+		p[current_i].z++;
 	}
 }
 
 void buttonaction_backward(void* args){
 	if (current_type_shape == 0){
-		&l[current_i].z--;
+		l[current_i].z--;
 	}
 	else if (current_type_shape == 1){
-		&cu[current_i].z--;
+		cu[current_i].z--;
 	}
 	else if (current_type_shape == 2){
-		&r[current_i].z--;
+		r[current_i].z--;
 	}
 	else if (current_type_shape == 3){
-		&ci[current_i].z--;
+		ci[current_i].z--;
 	}
 	else if (current_type_shape == 4){
-		&p[current_i].z--;
+		p[current_i].z--;
 	}
 }
 
