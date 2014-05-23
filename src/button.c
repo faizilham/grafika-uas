@@ -1,5 +1,6 @@
 #include "button.h"
 #include <math.h>
+#include "export.h"
 
 extern Line l[100];
 extern int nl;
@@ -49,7 +50,7 @@ void buttonaction_scaleup(void* args){
 		circ_scale(&ci[current_i],1.1);
 	}
 	else if (current_type_shape == 4){
-
+		polygon_scale(&p[current_i], 1.1);
 	}
 }
 
@@ -69,7 +70,7 @@ void buttonaction_scaledown(void* args){
 		circ_scale(&ci[current_i],scale);
 	}
 	else if (current_type_shape == 4){
-		
+		polygon_scale(&p[current_i],scale);
 	}
 }
 
@@ -87,12 +88,11 @@ void buttonaction_rotateleft(void* args){
 		// do nothing
 	}
 	else if (current_type_shape == 4){
-		
+		polygon_rotate(&p[current_i], -15);
 	}
 }
 
 void buttonaction_rotateright(void* args){
-	outtextxy(100,100,"oi");
 	if (current_type_shape == 0){
 		line_rotate(&l[current_i],15);
 	}
@@ -106,7 +106,7 @@ void buttonaction_rotateright(void* args){
 		//Do nothing
 	}
 	else if (current_type_shape == 4){
-		
+		polygon_rotate(&p[current_i], 15);
 	}
 }
 

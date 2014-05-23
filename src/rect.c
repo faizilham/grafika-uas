@@ -86,5 +86,5 @@ void rect_draw(Rect* r){
 	
 	point_linedraw(r->corner[3], r->corner[0], r->color);
 	
-	fill_polygon(r->min.x, r->min.y, r->max.x, r->max.y, r->fill, WHITE);
+	fill_polygon(r->min.x, r->min.y, r->max.x, r->max.y, r->fill, r->color);
 }
