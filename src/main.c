@@ -11,7 +11,7 @@
 #define EVENT_NONE 0
 #define EVENT_REDRAW 1
 #define EVENT_DRAGGING 2
-
+#define EVENT_CHANGEVIEW 3
 
 int current_event = EVENT_NONE;
 int current_type_shape;
@@ -41,7 +41,7 @@ extern int ncu;
 Array arr_rect; //array of rect for overlaying
 
 Rect canvas;
-
+int current_page = 0;
 
 void draw_select(){
 	int color = 14;
@@ -55,7 +55,7 @@ void draw_select(){
 	}
 }
 
-void refresh_canvas(){
+void refresh_canvas(){	
 	cleardevice();
 	
 	/* Draw canvas boundary */
@@ -116,8 +116,9 @@ int main(){
 	array_append(&arr_rect,r2);
 	/*end of rect overlay test*/
 	
-	refresh_canvas();
+	
 	init_button(buttons);
+	refresh_canvas();
 	refresh_buttons(buttons);
 	// main loop
 	printf("a");
@@ -128,166 +129,181 @@ int main(){
 		
 		//printf("a");
 		if (current_event != EVENT_NONE){
+			
+		
+			setactivepage(!current_page);
+			setvisualpage(current_page);
+			current_page = !current_page;
+			
 			refresh_canvas();
 			refresh_buttons(buttons);
-			if (current_event == EVENT_REDRAW){
+			
+			if (current_event == EVENT_CHANGEVIEW){
 				current_event = EVENT_NONE;
+			}else if (current_event == EVENT_REDRAW){
+				current_event = EVENT_CHANGEVIEW;
 			}
+		}else{
+			setactivepage(current_page);
+			setvisualpage(current_page);
 		}
+		
 		//refresh_buttons(buttons);
 		// mouse process
 		//printf("a");
 		
-		get_mouse_event(&e);
-		//printf("a");
-		if (e.button & MOUSE_LEFT){			
-			if (current_event == EVENT_NONE){
-				bool found = false;
-				// check collide dengan garis
-				for (int i=0; i < nl; i++){
-					if (line_checkCollision(&l[i], e.x, e.y)){
-						current_event = EVENT_DRAGGING;
-						current_type_shape = 0;
-						current_i = i;
-						current_min = &l[i].min;
-						current_max = &l[i].max;
-						found = true;
-						break;
-					}
-				}
-
-				// check collide dengan curve
-				if (!found){
-					for (int i = 0; i < ncu; ++i){
-						if (curve_checkCollision(&cu[i], e.x, e.y)){
+		if (current_event != EVENT_CHANGEVIEW){
+			get_mouse_event(&e);
+			//printf("a");
+			if (e.button & MOUSE_LEFT){			
+				if (current_event == EVENT_NONE){
+					bool found = false;
+					// check collide dengan garis
+					for (int i=0; i < nl; i++){
+						if (line_checkCollision(&l[i], e.x, e.y)){
 							current_event = EVENT_DRAGGING;
-							//current_shape = &r[i];
-							current_type_shape = 1;
+							current_type_shape = 0;
 							current_i = i;
-							current_min = &cu[i].min;
-							current_max = &cu[i].max;
+							current_min = &l[i].min;
+							current_max = &l[i].max;
 							found = true;
 							break;
 						}
 					}
+
+					// check collide dengan curve
+					if (!found){
+						for (int i = 0; i < ncu; ++i){
+							if (curve_checkCollision(&cu[i], e.x, e.y)){
+								current_event = EVENT_DRAGGING;
+								//current_shape = &r[i];
+								current_type_shape = 1;
+								current_i = i;
+								current_min = &cu[i].min;
+								current_max = &cu[i].max;
+								found = true;
+								break;
+							}
+						}
+					}
+
+
+					// check collide dengan rectangle
+					if (!found){
+						for (int i = 0; i < nr; ++i){
+							if (rect_checkCollision(&r[i], e.x, e.y)){
+								current_event = EVENT_DRAGGING;
+								//current_shape = &r[i];
+								current_type_shape = 2;
+								current_i = i;
+								current_min = &r[i].min;
+								current_max = &r[i].max;
+								found = true;
+								break;
+							}
+						}
+					}
+					// check collide dengan circle
+					if (!found){
+						for (int i=0;i < nci; i++){
+							if (circ_checkCollision(&ci[i],e.x,e.y)){
+								current_event = EVENT_DRAGGING;
+								current_type_shape = 3;
+								current_i = i;
+								current_min = &ci[i].min;
+								current_max = &ci[i].max;
+								found = true;
+								break;
+							}
+						}
+					}
+
+
+					// check collide dengan polygon
+					if (!found) {
+						for (int i=0;i<np;i++){
+							if (polygon_checkCollision(&p[i], e.x, e.y)){
+								current_event = EVENT_DRAGGING;
+								current_type_shape = 4;
+								current_i = i;
+								current_min = &p[i].min;
+								current_max = &p[i].max;
+								found = true;
+								break;
+							}
+						}
+					}
+					// check collide dengan button
+					if (!found){
+						for (int i=0;i<30;i++){
+							if (button_checkcollision(buttons[i],e.x,e.y)){
+								strcpy(msg,"");
+								// action fill
+								if (i < 16){
+									if (current_type_shape == 0){
+										l[current_i].color = i;
+									} else if (current_type_shape == 1){
+										cu[current_i].color = i;
+									} else if (current_type_shape == 2){
+										r[current_i].fill = i;
+									}
+									else if (current_type_shape == 3){
+										ci[current_i].fill = i;
+									}else if (current_type_shape == 4){
+										p[current_i].fill = i;
+									}
+									
+								}
+								else if (i < 30) {							
+									buttons[i].border = 14;
+									refresh_buttons(buttons);
+									
+									int *args;
+									buttons[i].callback((void*) args);
+									
+									buttons[i].border = 15;
+									refresh_buttons(buttons);
+								}
+								current_event = EVENT_REDRAW;
+								refresh_buttons(buttons);
+								outtextxy(15,460,msg);
+								break;
+							}
+						}
+					}
+				}else if (current_event = EVENT_DRAGGING){
+					if (current_type_shape == 0)
+						line_translate(&l[current_i], e.x - last.x, e.y - last.y);
+					else if (current_type_shape == 1)
+						curve_translate(&cu[current_i], e.x - last.x, e.y - last.y);
+					else if (current_type_shape == 2)
+						rect_translate(&r[current_i], e.x - last.x, e.y - last.y);
+					else if (current_type_shape == 3)
+						circ_translate(&ci[current_i], e.x - last.x, e.y - last.y);
+					else if (current_type_shape == 4)
+						polygon_translate(&p[current_i], e.x - last.x, e.y - last.y);
 				}
-
-
-				// check collide dengan rectangle
-				if (!found){
+				
+			}else if (e.button & MOUSE_RIGHT){			
+				if (current_event == EVENT_NONE){
 					for (int i = 0; i < nr; ++i){
 						if (rect_checkCollision(&r[i], e.x, e.y)){
-							current_event = EVENT_DRAGGING;
-							//current_shape = &r[i];
-							current_type_shape = 2;
-							current_i = i;
-							current_min = &r[i].min;
-							current_max = &r[i].max;
-							found = true;
+							rect_rotate(&r[i],45);
+							current_event = EVENT_REDRAW;
 							break;
 						}
 					}
 				}
-				// check collide dengan circle
-				if (!found){
-					for (int i=0;i < nci; i++){
-						if (circ_checkCollision(&ci[i],e.x,e.y)){
-							current_event = EVENT_DRAGGING;
-							current_type_shape = 3;
-							current_i = i;
-							current_min = &ci[i].min;
-							current_max = &ci[i].max;
-							found = true;
-							break;
-						}
-					}
-				}
-
-
-				// check collide dengan polygon
-				if (!found) {
-					for (int i=0;i<np;i++){
-						if (polygon_checkCollision(&p[i], e.x, e.y)){
-							current_event = EVENT_DRAGGING;
-							current_type_shape = 4;
-							current_i = i;
-							current_min = &p[i].min;
-							current_max = &p[i].max;
-							found = true;
-							break;
-						}
-					}
-				}
-				// check collide dengan button
-				if (!found){
-					for (int i=0;i<30;i++){
-						if (button_checkcollision(buttons[i],e.x,e.y)){
-							strcpy(msg,"");
-							// action fill
-							if (i < 16){
-								if (current_type_shape == 0){
-									l[current_i].color = i;
-								} else if (current_type_shape == 1){
-									cu[current_i].color = i;
-								} else if (current_type_shape == 2){
-									r[current_i].fill = i;
-								}
-								else if (current_type_shape == 3){
-									ci[current_i].fill = i;
-								}else if (current_type_shape == 4){
-									p[current_i].fill = i;
-								}
-								
-							}
-							else if (i < 30) {
-								buttons[i].border = 14;
-								refresh_buttons(buttons);
-								
-								int *args;
-								buttons[i].callback((void*) args);
-								
-								buttons[i].border = 15;
-								refresh_buttons(buttons);
-							}
-							refresh_canvas();
-							refresh_buttons(buttons);
-							outtextxy(15,460,msg);
-							break;
-						}
-					}
-				}
-			}else if (current_event = EVENT_DRAGGING){
-				if (current_type_shape == 0)
-					line_translate(&l[current_i], e.x - last.x, e.y - last.y);
-				else if (current_type_shape == 1)
-					curve_translate(&cu[current_i], e.x - last.x, e.y - last.y);
-				else if (current_type_shape == 2)
-					rect_translate(&r[current_i], e.x - last.x, e.y - last.y);
-				else if (current_type_shape == 3)
-					circ_translate(&ci[current_i], e.x - last.x, e.y - last.y);
-				else if (current_type_shape == 4)
-					polygon_translate(&p[current_i], e.x - last.x, e.y - last.y);
+			}else{
+				current_event = EVENT_NONE;
+				//current_shape = NULL;
+				//refresh_buttons(buttons);
 			}
 			
-		}else if (e.button & MOUSE_RIGHT){			
-			if (current_event == EVENT_NONE){
-				for (int i = 0; i < nr; ++i){
-					if (rect_checkCollision(&r[i], e.x, e.y)){
-						rect_rotate(&r[i],45);
-						current_event = EVENT_REDRAW;
-						break;
-					}
-				}
-			}
-		}else{
-			current_event = EVENT_NONE;
-			//current_shape = NULL;
-			//refresh_buttons(buttons);
+			last = e;
 		}
-		
-		last = e;
 		getch_async(&c);
-		delay(100);
+		delay(50);
 	}
 	
 	//export_canvas();

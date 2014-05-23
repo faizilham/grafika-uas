@@ -655,7 +655,7 @@ void init_button(Button* buttons){
 	}
 	setcolor(WHITE);
 	
-	refresh_buttons(buttons);
+	//refresh_buttons(buttons);
 	
 	/*outtextxy(22,65,"canvas");
 	outtextxy(475,60,"color picker");
