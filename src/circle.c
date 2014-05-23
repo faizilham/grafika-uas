@@ -4,7 +4,6 @@
 
 Circ ci[100];
 int nci;
-extern int current_max_c;
 
 void circ_setMinMax(Circ* c){
 	c->min = c->center;
@@ -27,8 +26,7 @@ Circ circ_create(int _x, int _y, float r){
 	
 	c.fill = BLACK;
 	c.color = WHITE;
-	c.z = current_max_c;
-	current_max_c++;
+	
 	return c;
 }
 
@@ -51,6 +49,7 @@ bool circ_checkCollision(Circ* c, float x, float y){
 }
 
 void circ_draw(Circ* c){
+	fill_ellipse(c->center.x, c->center.y, c->radius, c->radius, c->fill);
 	draw_ellipse(c->center.x, c->center.y, c->radius, c->radius, c->color);
-	fill_polygon (c->min.x, c->min.y, c->max.x, c->max.y, c->fill, c->color);
+	//fill_polygon (c->min.x, c->min.y, c->max.x, c->max.y, c->fill, c->color);
 }

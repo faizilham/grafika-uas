@@ -47,7 +47,7 @@ void polygon_draw(Poly *p){
 	}
 	draw_line(p->corner[length-1].x,p->corner[length-1].y,p->corner[0].x,p->corner[0].y,p->color);
 	
-	fill_polygon (p->min.x, p->min.y, p->max.x, p->max.y, p->fill, WHITE);
+	fill_polygon (p->min.x, p->min.y, p->max.x, p->max.y, p->fill, p->color);
 }
 
 void polygon_translate(Poly *p, int dx, int dy){
