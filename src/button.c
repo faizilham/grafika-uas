@@ -14,7 +14,11 @@ extern Curve cu[100];
 extern int ncu;
 extern int current_type_shape;
 extern int current_i;
+
 extern Point *current_min, *current_max;
+
+extern char msg[100];
+
 
 void button_draw(Button button){
 	draw_line(button.x,button.y,button.x+button.width,button.y,button.border);
@@ -112,37 +116,37 @@ void buttonaction_rotateright(void* args){
 
 void buttonaction_forward(void* args){
 	if (current_type_shape == 0){
-
+		&l[current_i].z++;
 	}
 	else if (current_type_shape == 1){
-
+		&cu[current_i].z++;
 	}
 	else if (current_type_shape == 2){
-
+		&r[current_i].z++;
 	}
 	else if (current_type_shape == 3){
-
+		&ci[current_i].z++;
 	}
 	else if (current_type_shape == 4){
-		
+		&p[current_i].z++;
 	}
 }
 
 void buttonaction_backward(void* args){
 	if (current_type_shape == 0){
-
+		&l[current_i].z--;
 	}
 	else if (current_type_shape == 1){
-
+		&cu[current_i].z--;
 	}
 	else if (current_type_shape == 2){
-
+		&r[current_i].z--;
 	}
 	else if (current_type_shape == 3){
-
+		&ci[current_i].z--;
 	}
 	else if (current_type_shape == 4){
-		
+		&p[current_i].z--;
 	}
 }
 
@@ -359,6 +363,118 @@ void buttonaction_createpolygon(void* args){
 
 void buttonaction_export(void* args){
 	export_canvas();
+	strcpy(msg,"File gambar berhasil terbentuk!");
+}
+
+void buttonaction_load(void* args){
+	printf("buttonaction_load\n");
+	FILE* file = fopen ("tmp.txt", "r");
+	int nline, ncurve, nrect, ncircle, npoly;
+  	fscanf (file, "%d %d %d %d %d", &nline, &ncurve, &nrect, &ncircle, &npoly);
+  	for (int i=0;i<nline;i++){
+  		int x1,y1,x2,y2;
+  		fscanf(file, "%d %d %d %d", &x1, &y1, &x2, &y2);
+  		l[i] = line_create(x1,y1,x2,y2);
+  		int z;
+  		fscanf(file, "%d", &z);
+  		l[i].z = z;
+  	}
+  	nl = nline;
+  	for (int i=0;i<ncurve;i++){
+  		Point corner[4];
+  		for (int j=0;j<4;j++){
+  			int x,y;
+  			fscanf(file, "%d %d", &x,&y);
+  			corner[j].x = x;
+  			corner[j].y = y;
+  		}
+  		cu[i] = curve_create(corner);
+  		int z;
+  		fscanf(file, "%d", &z);
+  		cu[i].z = z;
+  	}
+  	ncu = ncurve;
+  	for (int i=0;i<nrect;i++){
+  		int x1,y1,x2,y2;
+  		fscanf(file, "%d %d %d %d", &x1, &y1, &x2, &y2);
+  		r[i] = rect_create(x1,y1,x2,y2);
+  		int z,fill;
+  		fscanf(file, "%d %d", &z, &fill);
+  		r[i].z = z;
+  		r[i].fill = fill;
+  	}
+  	nr = nrect;
+  	for (int i=0;i<ncircle;i++){
+  		int x,y,r;
+  		fscanf(file, "%d %d %d", &x, &y, &r);
+  		ci[i] = circ_create(x,y,r);
+  		int z,fill;
+  		fscanf(file, "%d %d", &z, &fill);
+  		ci[i].z = z;
+  		ci[i].fill = fill;
+  	}
+  	nci = ncircle;
+  	for (int i=0;i<npoly;i++){
+  		int length;
+  		fscanf(file, "%d", &length);
+  		Point corner[100];
+  		for (int j=0;j<length;j++){
+  			int x,y;
+  			fscanf(file, "%d %d", &x, &y);
+  			corner[j].x = x;
+  			corner[j].y = y;
+  		}
+  		p[i] = polygon_create(corner,length);
+  		int z,fill;
+  		fscanf(file, "%d %d", &z, &fill);
+  		p[i].z = z;
+  		p[i].fill = fill;
+  	}
+  	np = npoly;
+  	printf("buttonaction_load2\n");
+  	strcpy(msg,"File berhasil termuat!");
+  	fclose (file); 
+}
+
+void buttonaction_save(void* args){
+
+	FILE * pFile;
+  	pFile = fopen ("tmp.txt","w");
+  	if (pFile!=NULL)
+  	{
+
+  		fprintf (pFile, "%d %d %d %d %d\n", nl, ncu, nr, nci, np);
+    	for (int i=0;i<nl;i++){
+	  		fprintf(pFile, "%.f %.f %.f %.f\n", l[i].p1.x, l[i].p1.y, l[i].p2.x, l[i].p2.y);
+	  		fprintf(pFile, "%d\n",l[i].z);
+	  	}
+	  	for (int i=0;i<ncu;i++){
+	  		for (int j=0;j<4;j++){
+	  			fprintf(pFile, "%.f %.f\n", cu[i].points[j].x,cu[i].points[j].y);
+	  		}
+	  		fprintf(pFile, "%d\n",cu[i].z);
+	  	}
+	  	for (int i=0;i<nr;i++){
+	  		//printf("%d %d %d %d\n", r[i].corner[0].x, r[i].corner[0].y, r[i].corner[2].x, r[i].corner[2].y);
+	  		fprintf(pFile, "%.f %.f %.f %.f\n", r[i].corner[0].x, r[i].corner[0].y, r[i].corner[2].x, r[i].corner[2].y);
+	  		fprintf(pFile, "%d %d\n",r[i].z, r[i].fill);
+	  	}
+	  	for (int i=0;i<nci;i++){
+	  		fprintf(pFile, "%.f %.f %.f\n", ci[i].center.x, ci[i].center.y, ci[i].radius);
+	  		fprintf(pFile, "%d %d\n",ci[i].z, ci[i].fill);
+	  	}
+	  	for (int i=0;i<np;i++){
+	  		fprintf(pFile, "%d\n", p[i].neff);
+	  		for (int j=0;j<p[i].neff;j++){
+	  			fprintf(pFile, "%.f %.f\n", p[i].corner[j].x, p[i].corner[j].y);
+	  		}
+	  		fprintf(pFile, "%d %d\n",p[i].z, p[i].fill);
+	  	}
+	  	//outtextxy(0,0,"buttonaction_save");
+    	fclose (pFile);
+    	strcpy(msg,"File berhasil tersimpan!");
+  	}
+
 }
 
 void buttonaction_fill(void* args){
@@ -511,6 +627,7 @@ void init_button(Button* buttons){
 	polygon10 = polygon_create(corner10,6);
 	//buttons[25].icon = &polygon10;
 	shape_setObject(&buttons[25].icon, TYPE_POLYGON, &polygon10);
+	buttons[25].callback = buttonaction_forward;
 	
 
 	// order - button
@@ -521,10 +638,13 @@ void init_button(Button* buttons){
 	polygon11 = polygon_create(corner11,2);
 	//buttons[26].icon = &polygon11;
 	shape_setObject(&buttons[26].icon, TYPE_POLYGON, &polygon11);
+	buttons[26].callback = buttonaction_backward;
 
 	buttons[27].x = -142; buttons[27].y = 213; buttons[27].width = 50; buttons[27].height = 18; buttons[27].color = 0;
+	buttons[27].callback = buttonaction_load;
 
 	buttons[28].x = -142; buttons[28].y = 190; buttons[28].width = 50; buttons[28].height = 18; buttons[28].color = 0;
+	buttons[28].callback = buttonaction_save;
 
 	buttons[29].x = -142; buttons[29].y = 167; buttons[29].width = 50; buttons[29].height = 18; buttons[29].color = 0;
 	buttons[29].callback = buttonaction_export;
@@ -591,10 +711,3 @@ void refresh_buttons(Button* buttons){
 	//printf("helllo");
 }
 
-void buttonaction_load(void* args){
-
-}
-
-void buttonaction_save(void* args){
-
-}
