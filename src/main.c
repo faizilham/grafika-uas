@@ -159,7 +159,7 @@ int main(){
 				if (current_event == EVENT_NONE){
 					bool found = false;
 					// check collide dengan garis
-					for (int i=0; i < nl; i++){
+					for (int i=nl-1; i >= 0; i--){
 						if (line_checkCollision(&l[i], e.x, e.y)){
 							current_event = EVENT_DRAGGING;
 							current_type_shape = 0;
@@ -173,7 +173,7 @@ int main(){
 
 					// check collide dengan curve
 					if (!found){
-						for (int i = 0; i < ncu; ++i){
+						for (int i = ncu-1; i >= 0; --i){
 							if (curve_checkCollision(&cu[i], e.x, e.y)){
 								current_event = EVENT_DRAGGING;
 								//current_shape = &r[i];
@@ -190,7 +190,7 @@ int main(){
 
 					// check collide dengan rectangle
 					if (!found){
-						for (int i = 0; i < nr; ++i){
+						for (int i = nr-1; i >= 0; --i){
 							if (rect_checkCollision(&r[i], e.x, e.y)){
 								current_event = EVENT_DRAGGING;
 								//current_shape = &r[i];
@@ -205,7 +205,7 @@ int main(){
 					}
 					// check collide dengan circle
 					if (!found){
-						for (int i=0;i < nci; i++){
+						for (int i = nci-1; i >= 0; --i){
 							if (circ_checkCollision(&ci[i],e.x,e.y)){
 								current_event = EVENT_DRAGGING;
 								current_type_shape = 3;
@@ -221,7 +221,7 @@ int main(){
 
 					// check collide dengan polygon
 					if (!found) {
-						for (int i=0;i<np;i++){
+						for (int i = np-1; i >= 0; --i){
 							if (polygon_checkCollision(&p[i], e.x, e.y)){
 								current_event = EVENT_DRAGGING;
 								current_type_shape = 4;
@@ -267,10 +267,20 @@ int main(){
 								current_event = EVENT_REDRAW;
 								refresh_buttons(buttons);
 								outtextxy(15,460,msg);
+								found = true;
 								break;
 							}
 						}
 					}
+					
+					if (!found && current_type_shape > -1){			
+						current_type_shape = -1;
+						current_i = -1;
+						current_min = NULL;
+						current_max = NULL;
+						current_event = EVENT_REDRAW;
+					}
+					
 				}else if (current_event = EVENT_DRAGGING){
 					if (current_type_shape == 0)
 						line_translate(&l[current_i], e.x - last.x, e.y - last.y);
@@ -285,17 +295,10 @@ int main(){
 				}
 				
 			}else if (e.button & MOUSE_RIGHT){			
-				if (current_event == EVENT_NONE){
-					for (int i = 0; i < nr; ++i){
-						if (rect_checkCollision(&r[i], e.x, e.y)){
-							rect_rotate(&r[i],45);
-							current_event = EVENT_REDRAW;
-							break;
-						}
-					}
-				}
-			}else{
+				
+			}else{				
 				current_event = EVENT_NONE;
+				
 				//current_shape = NULL;
 				//refresh_buttons(buttons);
 			}
