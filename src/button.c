@@ -14,6 +14,7 @@ extern Curve cu[100];
 extern int ncu;
 extern int current_type_shape;
 extern int current_i;
+extern Point *current_min, *current_max;
 
 void button_draw(Button button){
 	draw_line(button.x,button.y,button.x+button.width,button.y,button.border);
@@ -176,8 +177,14 @@ void buttonaction_createline(void* args){
 	int y2 = e.y;
 	l[nl] = line_create(x1, y1, x2, y2);
 	line_draw(&l[nl]);
-	nl++;
 	
+	
+	current_type_shape = 0;
+	current_i = nl;
+	current_min = &l[current_i].min;
+	current_max = &l[current_i].max;
+	
+	nl++;
 }
 
 void buttonaction_createcurve(void* args){
@@ -210,6 +217,12 @@ void buttonaction_createcurve(void* args){
 	
 	cu[ncu] = curve_create(points);
 	curve_draw(&cu[ncu]);
+	
+	current_type_shape = 1;
+	current_i = ncu;
+	current_min = &cu[current_i].min;
+	current_max = &cu[current_i].max;
+	
 	ncu++;
 	// belom ada fungsi penambahan ke array
 }
@@ -245,6 +258,12 @@ void buttonaction_createsquare(void* args){
 	int y2 = e.y;
 	r[nr] = rect_create(x1, y1, x2, y2);
 	rect_draw(&r[nr]);
+	
+	current_type_shape = 2;
+	current_i = nr;
+	current_min = &r[current_i].min;
+	current_max = &r[current_i].max;
+	
 	nr++;
 	
 }
@@ -286,6 +305,12 @@ void buttonaction_createcircle(void* args){
 	
 	ci[nci] = circ_create(x1, y1, r);
 	circ_draw(&ci[nci]);
+	
+	current_type_shape = 3;
+	current_i = nci;
+	current_min = &ci[current_i].min;
+	current_max = &ci[current_i].max;
+	
 	nci++;
 }
 
@@ -323,6 +348,12 @@ void buttonaction_createpolygon(void* args){
 	p[np] = polygon_create(corner,i);
 	//outtextxy(100,100,"ok");
 	polygon_draw(&p[np]);
+	
+	current_type_shape = 4;
+	current_i = np;
+	current_min = &p[current_i].min;
+	current_max = &p[current_i].max;
+	
 	np++;
 }
 
@@ -503,7 +534,10 @@ void init_button(Button* buttons){
 		buttons[i].border = 15;
 	}
 	setcolor(WHITE);
-	outtextxy(22,65,"canvas");
+	
+	refresh_buttons(buttons);
+	
+	/*outtextxy(22,65,"canvas");
 	outtextxy(475,60,"color picker");
 	outtextxy(25,45,"ln");
 	outtextxy(51,45,"crv");
@@ -515,7 +549,7 @@ void init_button(Button* buttons){
 	outtextxy(353,45,"orde-z");
 	outtextxy(188,13,"load");
 	outtextxy(188,36,"save");
-	outtextxy(183,59,"export");
+	outtextxy(183,59,"export");*/
 	// buttons[16].x = -300; buttons[16].y = 200; buttons[16].width = 25; buttons[16].height = 25; buttons[16].color = 0;
 	// Point corner[100];
 	// corner[0].x = -295; corner[0].y = 205; corner[1].x = -280; corner[1].y = 220;
@@ -549,8 +583,8 @@ void refresh_buttons(Button* buttons){
 	outtextxy(111,45,"cir");
 	outtextxy(140,45,"poly");
 	outtextxy(242,45,"rotate");
-	outtextxy(303,45,"zoom");
-	outtextxy(353,45,"orde-z");
+	outtextxy(297,45,"resize");
+	outtextxy(349,45,"order-z");
 	outtextxy(188,13,"load");
 	outtextxy(188,36,"save");
 	outtextxy(183,59,"export");
