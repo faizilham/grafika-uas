@@ -35,6 +35,10 @@ void buttonaction_fill(void* args);
 void init_button(Button* buttons);
 void refresh_buttons(Button* buttons);
 
+void buttonaction_export(void* args);
+void buttonaction_load(void* args);
+void buttonaction_save(void* args);
+
 #endif
 
 /*

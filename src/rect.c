@@ -2,6 +2,7 @@
 #include "helper.h"
 #include "libgraph.h"
 
+
 Rect r[100];
 int nr;
 extern int current_max_c;

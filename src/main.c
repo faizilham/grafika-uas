@@ -20,6 +20,7 @@ int current_type_shape;
 int current_i;
 int current_max_c;
 Rect* current_shape = NULL;
+char msg[100];
 
 Button buttons[100];
 
@@ -221,7 +222,7 @@ int main(){
 				if (!found){
 					for (int i=0;i<30;i++){
 						if (button_checkcollision(buttons[i],e.x,e.y)){
-
+							strcpy(msg,"");
 							// action fill
 							if (i < 16){
 								if (current_type_shape == 2){
@@ -247,6 +248,7 @@ int main(){
 							}
 							refresh_canvas();
 							refresh_buttons(buttons);
+							outtextxy(15,460,msg);
 							break;
 						}
 					}
