@@ -6,7 +6,7 @@
 
 typedef struct{
 	Point p1, p2;
-	Point center;
+	Point center, min, max;
 	int color;
 	int z;
 } Line;

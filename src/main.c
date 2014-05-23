@@ -2,10 +2,8 @@
 #include "iohandler.h"
 #include "button.h"
 
-#include "line.h"
-#include "rect.h"
-#include "circle.h"
-#include "curve.h"
+#include "shape.h"
+#include "libgraph.h"
 
 #include "overlay.h"
 #include "export.h"
@@ -19,6 +17,7 @@ int current_event = EVENT_NONE;
 int current_type_shape;
 int current_i;
 int current_max_c;
+Point *current_min = NULL, *current_max = NULL;
 Rect* current_shape = NULL;
 
 Button buttons[100];
@@ -38,19 +37,28 @@ extern int nci;
 extern Curve cu[100];
 extern int ncu;
 
-Circ cir;
 Array arr_rect; //array of rect for overlaying
 
 Rect canvas;
-Curve crv;
+
+
+void draw_select(){
+	int color = 14;
+	int part = 6;
+	int d = 2;
+	if (current_min != NULL && current_max != NULL){
+		draw_dash(current_min->x - d, current_min->y - d, current_min->x - d, current_max->y + d, part, color);
+		draw_dash(current_min->x - d, current_max->y + d, current_max->x + d, current_max->y + d, part, color);
+		draw_dash(current_max->x + d, current_max->y + d, current_max->x + d, current_min->y - d, part, color);
+		draw_dash(current_max->x + d, current_min->y - d, current_min->x - d, current_min->y - d, part, color);
+	}
+}
 
 void refresh_canvas(){
 	cleardevice();
 	
 	/* Draw canvas boundary */
 	rect_draw(&canvas);
-	
-	curve_draw(&crv);
 	
 	for (int i=0;i<nl;i++){
 		line_draw(&l[i]);
@@ -70,8 +78,8 @@ void refresh_canvas(){
 	for (int i=0;i<ncu;i++){
 		curve_draw(&cu[i]);
 	}
-
-	circ_draw(&cir);
+	
+	draw_select();
 	
 	/*rect overlay test*/
 	for (int i = 0; i < arr_rect.size; ++i){
@@ -92,27 +100,9 @@ int main(){
 	init_graph();
 	
 	canvas = rect_create(-300, 160, 295, -210);
-	
-	crv.color = 15;
-	curve_setPoint(&crv, 0, -250, 0);
-	curve_setPoint(&crv, 1, -150, 100);
-	curve_setPoint(&crv, 2, -100, -100);
-	curve_setPoint(&crv, 3, -50, 0);
-	
-	cir = circ_create(100, 100, 200);
 
 	nl = 0;
-
-	cir = circ_create(100, 100, 20);
-	cir.fill = LIGHTGRAY;
-
-	r[0] = rect_create(-50, -50, -10, -10);
-	r[0].fill = YELLOW;
-	r[1] = rect_create(10, 10, 50, 50);
-	r[1].fill = MAGENTA;
-	r[2] = rect_create(-50, 50, -10, 10);
-	r[2].fill = CYAN;
-	nr = 3;
+	nr = 0;
 	/*rect overlay test*/
 	array_init(&arr_rect);
 	
@@ -158,6 +148,8 @@ int main(){
 						current_event = EVENT_DRAGGING;
 						current_type_shape = 0;
 						current_i = i;
+						current_min = &l[i].min;
+						current_max = &l[i].max;
 						found = true;
 						break;
 					}
@@ -171,6 +163,8 @@ int main(){
 							//current_shape = &r[i];
 							current_type_shape = 1;
 							current_i = i;
+							current_min = &cu[i].min;
+							current_max = &cu[i].max;
 							found = true;
 							break;
 						}
@@ -186,6 +180,8 @@ int main(){
 							//current_shape = &r[i];
 							current_type_shape = 2;
 							current_i = i;
+							current_min = &r[i].min;
+							current_max = &r[i].max;
 							found = true;
 							break;
 						}
@@ -198,6 +194,8 @@ int main(){
 							current_event = EVENT_DRAGGING;
 							current_type_shape = 3;
 							current_i = i;
+							current_min = &ci[i].min;
+							current_max = &ci[i].max;
 							found = true;
 							break;
 						}
@@ -212,6 +210,8 @@ int main(){
 							current_event = EVENT_DRAGGING;
 							current_type_shape = 4;
 							current_i = i;
+							current_min = &p[i].min;
+							current_max = &p[i].max;
 							found = true;
 							break;
 						}
@@ -224,13 +224,16 @@ int main(){
 
 							// action fill
 							if (i < 16){
-								if (current_type_shape == 2){
+								if (current_type_shape == 0){
+									l[current_i].color = i;
+								} else if (current_type_shape == 1){
+									cu[current_i].color = i;
+								} else if (current_type_shape == 2){
 									r[current_i].fill = i;
 								}
 								else if (current_type_shape == 3){
 									ci[current_i].fill = i;
-								}
-								if (current_type_shape == 4){
+								}else if (current_type_shape == 4){
 									p[current_i].fill = i;
 								}
 								

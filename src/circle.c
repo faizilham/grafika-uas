@@ -32,6 +32,8 @@ Circ circ_create(int _x, int _y, float r){
 
 void circ_translate(Circ* c, int dx, int dy){	
 	point_translate(&c->center, dx, dy);
+	point_translate(&c->min, dx, dy);
+	point_translate(&c->max, dx, dy);
 }
 
 void circ_scale(Circ* c, float scale){
