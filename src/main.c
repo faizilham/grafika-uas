@@ -87,7 +87,7 @@ void refresh_canvas(){
 		Rect objRect = array_get(&arr_rect,i);
 		rect_draw(&objRect);
 	}
-	doOverlay(&arr_rect);
+	//doOverlay(&arr_rect);
 	/*end of rect overlay test*/
 }
 
@@ -112,8 +112,8 @@ int main(){
 	Rect r2 = rect_create(-10,-10,35,35);
 	r2.fill = BLUE;
 	
-	array_append(&arr_rect,r1);
-	array_append(&arr_rect,r2);
+	//array_append(&arr_rect,r1);
+	//array_append(&arr_rect,r2);
 	/*end of rect overlay test*/
 	
 	refresh_canvas();
